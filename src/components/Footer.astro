@@ -1,0 +1,18 @@
+---
+/**
+ * Footer Component
+ * Minimal static footer element.
+ */
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<footer class="site-footer">
+  <p>&copy; {new Date().getFullYear()} Bagi-sh.com. {t('footer.rights')}</p>
+</footer>

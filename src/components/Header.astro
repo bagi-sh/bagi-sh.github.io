@@ -1,0 +1,32 @@
+---
+/**
+ * Header Component
+ * Renders branding and navigation links with language toggle.
+ */
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const targetLang: Lang = lang === 'pt' ? 'en' : 'pt';
+const targetLabel = lang === 'pt' ? 'EN' : 'PT';
+const switchedPath = Astro.url.pathname.replace(`/${lang}`, `/${targetLang}`);
+---
+
+<header class="site-header">
+  <div class="header-container">
+    <a href={`/${lang}/`} class="site-logo">Bagi-sh.com</a>
+    
+    <nav class="site-nav">
+      <a href={`/${lang}/`}>{t('nav.home')}</a>
+      <a href={`/${lang}/feed/`}>{t('nav.feed')}</a>
+      <a href={`/${lang}/projetos/projeto-alpha/`}>{t('nav.projects')}</a>
+      <a href={`/${lang}/docs/exemplo-doc/`}>{t('nav.docs')}</a>
+      <a href={switchedPath} class="lang-switch">{targetLabel}</a>
+    </nav>
+  </div>
+</header>

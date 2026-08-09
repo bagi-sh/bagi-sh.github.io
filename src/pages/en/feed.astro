@@ -1,0 +1,30 @@
+---
+/**
+ * English Microblog Feed
+ */
+import LayoutGlobal from '../../layouts/LayoutGlobal.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('microblog'))
+  .filter(p => p.slug.startsWith('en/'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const rendered = await Promise.all(
+  posts.map(async p => ({ post: p, Content: (await p.render()).Content }))
+);
+---
+
+<LayoutGlobal title="Feed | Bagi-sh.com" lang="en">
+  <h1>Microblog</h1>
+  <div class="feed-list">
+    {rendered.map(({ post, Content }) => (
+      <article class="post-card">
+        {post.data.title && <h2>{post.data.title}</h2>}
+        <time>{post.data.pubDate.toLocaleDateString('en-US')}</time>
+        <div class="post-content">
+          <Content />
+        </div>
+      </article>
+    ))}
+  </div>
+</LayoutGlobal>

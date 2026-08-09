@@ -1,0 +1,28 @@
+---
+/**
+ * Portuguese Home Page
+ */
+import LayoutGlobal from '../../layouts/LayoutGlobal.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('microblog'))
+  .filter(p => p.slug.startsWith('pt/'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<LayoutGlobal title="Bagi-sh.com | Engenharia de Baixo Nível & Cibersegurança" lang="pt">
+  <section class="hero">
+    <h1>Bagi-sh.com</h1>
+    <p>Engenharia de software de baixo nível, cibersegurança e sistemas embarcados.</p>
+  </section>
+
+  <section class="feed">
+    <h2>Microblog</h2>
+    {posts.map(post => (
+      <article class="feed-item">
+        <h3>{post.data.title || 'Sem título'}</h3>
+        <time>{post.data.pubDate.toLocaleDateString('pt-BR')}</time>
+      </article>
+    ))}
+  </section>
+</LayoutGlobal>

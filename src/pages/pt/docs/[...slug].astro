@@ -1,0 +1,46 @@
+---
+/**
+ * Portuguese Docs Route
+ */
+import { getCollection, type CollectionEntry } from 'astro:content';
+import LayoutGlobal from '../../../layouts/LayoutGlobal.astro';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs');
+  const ptDocs = docs.filter(d => d.slug.startsWith('pt/'));
+
+  return ptDocs.map(entry => ({
+    params: { slug: entry.slug.replace(/^pt\//, '') },
+    props: { entry, allDocs: ptDocs },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'docs'>;
+  allDocs: CollectionEntry<'docs'>[];
+}
+
+const { entry, allDocs } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<LayoutGlobal title={`${entry.data.title} | Docs`} description={entry.data.description} lang="pt">
+  <div class="docs-container">
+    <aside class="docs-nav">
+      <h3>Documentação</h3>
+      <ul>
+        {allDocs.map(d => (
+          <li>
+            <a href={`/pt/docs/${d.slug.replace(/^pt\//, '')}/`}>{d.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    </aside>
+
+    <article class="doc-content">
+      <h1>{entry.data.title}</h1>
+      <p>{entry.data.description}</p>
+      <Content />
+    </article>
+  </div>
+</LayoutGlobal>

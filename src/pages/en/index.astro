@@ -1,0 +1,28 @@
+---
+/**
+ * English Home Page
+ */
+import LayoutGlobal from '../../layouts/LayoutGlobal.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('microblog'))
+  .filter(p => p.slug.startsWith('en/'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<LayoutGlobal title="Bagi-sh.com | Low-Level Engineering & Cybersecurity" lang="en">
+  <section class="hero">
+    <h1>Bagi-sh.com</h1>
+    <p>Low-level software engineering, cybersecurity, and embedded systems.</p>
+  </section>
+
+  <section class="feed">
+    <h2>Microblog</h2>
+    {posts.map(post => (
+      <article class="feed-item">
+        <h3>{post.data.title || 'Untitled'}</h3>
+        <time>{post.data.pubDate.toLocaleDateString('en-US')}</time>
+      </article>
+    ))}
+  </section>
+</LayoutGlobal>
