@@ -1,6 +1,20 @@
 ---
 /**
  * Root Redirect Page
+ * Relative redirect preserving host (bagi-sh.github.io or custom domain)
  */
-return Astro.redirect('/pt/');
 ---
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content="0;url=./pt/" />
+    <script is:inline>
+      window.location.replace("./pt/");
+    </script>
+    <title>Redirecionando | Bagi-sh</title>
+  </head>
+  <body>
+    <p>Redirecionando para <a href="./pt/">/pt/</a>...</p>
+  </body>
+</html>

@@ -22,9 +22,12 @@ interface Props {
 
 const { entry, allDocs } = Astro.props;
 const { Content } = await entry.render();
+
+const currentSlug = entry.slug.replace(/^en\//, '');
+const switchedPath = currentSlug === 'example-doc' ? '/pt/docs/exemplo-doc/' : `/pt/docs/${currentSlug}/`;
 ---
 
-<LayoutGlobal title={`${entry.data.title} | Docs`} description={entry.data.description} lang="en">
+<LayoutGlobal title={`${entry.data.title} | Docs`} description={entry.data.description} lang="en" switchedPath={switchedPath}>
   <div class="docs-container">
     <aside class="docs-nav">
       <h3>Docs</h3>

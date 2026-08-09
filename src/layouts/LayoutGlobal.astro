@@ -11,12 +11,14 @@ interface Props {
   title?: string;
   description?: string;
   lang?: Lang;
+  switchedPath?: string;
 }
 
 const currentLang = Astro.props.lang || getLangFromUrl(Astro.url);
 const {
   title = 'Bagi-sh.com',
   description = 'Engenharia de software de baixo nível e cibersegurança.',
+  switchedPath,
 } = Astro.props;
 ---
 
@@ -29,7 +31,7 @@ const {
     <title>{title}</title>
   </head>
   <body>
-    <Header lang={currentLang} />
+    <Header lang={currentLang} switchedPath={switchedPath} />
     <main class="content-container">
       <slot />
     </main>

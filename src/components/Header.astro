@@ -1,20 +1,52 @@
 ---
 /**
  * Header Component
- * Renders branding and navigation links with language toggle.
+ * Renders branding and navigation links with dynamic language toggle.
  */
 import { useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
+  switchedPath?: string;
 }
 
-const { lang } = Astro.props;
+const { lang, switchedPath: customSwitchedPath } = Astro.props;
 const t = useTranslations(lang);
 
 const targetLang: Lang = lang === 'pt' ? 'en' : 'pt';
 const targetLabel = lang === 'pt' ? 'EN' : 'PT';
-const switchedPath = Astro.url.pathname.replace(`/${lang}`, `/${targetLang}`);
+
+// Correct path per language
+const projectPath = lang === 'pt' ? '/pt/projetos/projeto-alpha/' : '/en/projetos/project-alpha/';
+const docPath = lang === 'pt' ? '/pt/docs/exemplo-doc/' : '/en/docs/example-doc/';
+
+// Smart language switch calculation
+let switchedPath = customSwitchedPath;
+
+if (!switchedPath) {
+  const currentPath = Astro.url.pathname;
+  
+  const routeMap: Record<string, string> = {
+    '/pt/': '/en/',
+    '/en/': '/pt/',
+    '/pt/feed/': '/en/feed/',
+    '/en/feed/': '/pt/feed/',
+    '/pt/projetos/projeto-alpha/': '/en/projetos/project-alpha/',
+    '/en/projetos/project-alpha/': '/pt/projetos/projeto-alpha/',
+    '/pt/docs/exemplo-doc/': '/en/docs/example-doc/',
+    '/en/docs/example-doc/': '/pt/docs/exemplo-doc/',
+  };
+
+  const normalizedPath = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
+
+  if (routeMap[normalizedPath]) {
+    switchedPath = routeMap[normalizedPath];
+  } else if (normalizedPath.includes(`/${lang}/`)) {
+    switchedPath = normalizedPath.replace(`/${lang}/`, `/${targetLang}/`);
+  } else {
+    switchedPath = `/${targetLang}/`;
+  }
+}
 ---
 
 <header class="site-header">
@@ -24,8 +56,8 @@ const switchedPath = Astro.url.pathname.replace(`/${lang}`, `/${targetLang}`);
     <nav class="site-nav">
       <a href={`/${lang}/`}>{t('nav.home')}</a>
       <a href={`/${lang}/feed/`}>{t('nav.feed')}</a>
-      <a href={`/${lang}/projetos/projeto-alpha/`}>{t('nav.projects')}</a>
-      <a href={`/${lang}/docs/exemplo-doc/`}>{t('nav.docs')}</a>
+      <a href={projectPath}>{t('nav.projects')}</a>
+      <a href={docPath}>{t('nav.docs')}</a>
       <a href={switchedPath} class="lang-switch">{targetLabel}</a>
     </nav>
   </div>
