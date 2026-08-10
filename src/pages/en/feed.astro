@@ -1,29 +1,75 @@
 ---
 /**
- * English Microblog Feed
+ * English Microblog Feed (Collapsible Posts)
  */
 import LayoutGlobal from '../../layouts/LayoutGlobal.astro';
 import { getCollection } from 'astro:content';
+import '../global-style.css';
 
 const posts = (await getCollection('microblog'))
   .filter(p => p.slug.startsWith('en/'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
+function processPost(body: string) {
+  const cleanText = body
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    .replace(/<img.*?>/g, '')
+    .replace(/#+\s+/g, '')
+    .trim();
+
+  const hasImageAtStart = /^\s*(!\[.*?\]\(.*?\)|<img.*?>)/.test(body);
+  const imgMatch = body.match(/^\s*(!\[.*?\]\((.*?)\)|<img.*?src=["'](.*?)["'].*?>)/);
+  const imageUrl = imgMatch ? (imgMatch[2] || imgMatch[3]) : null;
+
+  const isLong = body.length > 280 || hasImageAtStart;
+
+  const previewText = hasImageAtStart
+    ? cleanText.slice(0, 60)
+    : cleanText.slice(0, 200);
+
+  return { isLong, hasImageAtStart, imageUrl, previewText };
+}
+
 const rendered = await Promise.all(
-  posts.map(async p => ({ post: p, Content: (await p.render()).Content }))
+  posts.map(async p => {
+    const meta = processPost(p.body);
+    const { Content } = await p.render();
+    return { post: p, Content, meta };
+  })
 );
 ---
 
 <LayoutGlobal title="Feed | Bagi-sh.com" lang="en">
   <h1>Microblog</h1>
-  <div class="feed-list">
-    {rendered.map(({ post, Content }) => (
+  <div class="feed-list" style="margin-top: 1.5rem;">
+    {rendered.map(({ post, Content, meta }) => (
       <article class="post-card">
         {post.data.title && <h2>{post.data.title}</h2>}
         <time>{post.data.pubDate.toLocaleDateString('en-US')}</time>
-        <div class="post-content">
-          <Content />
-        </div>
+
+        {!meta.isLong ? (
+          <div class="post-content">
+            <Content />
+          </div>
+        ) : (
+          <details class="feed-details">
+            <summary class="feed-summary">
+              {meta.hasImageAtStart && meta.imageUrl && (
+                <img src={meta.imageUrl} alt="Preview" class="preview-image" />
+              )}
+              <p class="summary-preview">
+                {meta.previewText}...
+              </p>
+              <span class="expand-btn-wrapper">
+                <span class="expand-btn">Expand post ↓</span>
+              </span>
+            </summary>
+
+            <div class="post-content" style="margin-top: 1rem;">
+              <Content />
+            </div>
+          </details>
+        )}
       </article>
     ))}
   </div>

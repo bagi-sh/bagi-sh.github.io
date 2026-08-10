@@ -1,28 +1,81 @@
 ---
 /**
- * Portuguese Home Page
+ * Portuguese Landing Page Hub / Linktree
  */
 import LayoutGlobal from '../../layouts/LayoutGlobal.astro';
-import { getCollection } from 'astro:content';
+import '../global-style.css';
 
-const posts = (await getCollection('microblog'))
-  .filter(p => p.slug.startsWith('pt/'))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const externalLinks = [
+  {
+    name: 'GitHub',
+    url: 'https://github.com/bagi-sh',
+    icon: '/icons/github.svg',
+  },
+  {
+    name: 'Last.fm',
+    url: 'https://www.last.fm/user/bagi-sh',
+    icon: '/icons/lastfm.svg',
+  },
+  {
+    name: 'E-mail',
+    url: 'mailto:contact@bagi-sh.com',
+    icon: '/icons/email.svg',
+  },
+];
 ---
 
-<LayoutGlobal title="Bagi-sh.com | Engenharia de Baixo Nível & Cibersegurança" lang="pt">
-  <section class="hero">
-    <h1>Bagi-sh.com</h1>
-    <p>Engenharia de software de baixo nível, cibersegurança e sistemas embarcados.</p>
-  </section>
+<LayoutGlobal title="Bagi-sh.com | Engenharia & Cibersegurança" lang="pt">
+  <div class="hub-container">
+    <!-- Seção A: Perfil (Header) -->
+    <header class="profile-header">
+      <img src="/avatar.png" alt="Avatar de Bagi" class="avatar-img" />
+      <div>
+        <h1>Bagi</h1>
+        <p class="handle">@bagi-sh</p>
+      </div>
+      <p class="bio">
+        Engenharia de software de baixo nível, cibersegurança e sistemas embarcados.
+      </p>
+    </header>
 
-  <section class="feed">
-    <h2>Microblog</h2>
-    {posts.map(post => (
-      <article class="feed-item">
-        <h3>{post.data.title || 'Sem título'}</h3>
-        <time>{post.data.pubDate.toLocaleDateString('pt-BR')}</time>
-      </article>
-    ))}
-  </section>
+    <!-- Seção B: Navegação Interna (Hub) -->
+    <section class="hub-nav-section">
+      <h2 class="section-title">Navegação Interna</h2>
+      <a href="/pt/feed/" class="hub-card">
+        <div class="card-left">
+          <img src="/icons/feed.svg" alt="Feed" class="card-icon" />
+          <span>Microblog (Feed)</span>
+        </div>
+        <span class="ext-icon">&rarr;</span>
+      </a>
+      <a href="/pt/projetos/projeto-alpha/" class="hub-card">
+        <div class="card-left">
+          <img src="/icons/folder.svg" alt="Projetos" class="card-icon" />
+          <span>Portfólio de Projetos</span>
+        </div>
+        <span class="ext-icon">&rarr;</span>
+      </a>
+      <a href="/pt/docs/exemplo-doc/" class="hub-card">
+        <div class="card-left">
+          <img src="/icons/book.svg" alt="Docs" class="card-icon" />
+          <span>Documentação Técnica</span>
+        </div>
+        <span class="ext-icon">&rarr;</span>
+      </a>
+    </section>
+
+    <!-- Seção C: Contatos e Redes (Links Externos) -->
+    <section class="external-links-section">
+      <h2 class="section-title">Contatos e Redes</h2>
+      {externalLinks.map(link => (
+        <a href={link.url} target="_blank" rel="noopener noreferrer" class="external-link-card">
+          <div class="card-left">
+            <img src={link.icon} alt={link.name} class="card-icon" />
+            <span>{link.name}</span>
+          </div>
+          <span class="ext-icon">&#8599;</span>
+        </a>
+      ))}
+    </section>
+  </div>
 </LayoutGlobal>

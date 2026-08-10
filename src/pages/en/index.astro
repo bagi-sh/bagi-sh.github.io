@@ -1,28 +1,81 @@
 ---
 /**
- * English Home Page
+ * English Landing Page Hub / Linktree
  */
 import LayoutGlobal from '../../layouts/LayoutGlobal.astro';
-import { getCollection } from 'astro:content';
+import '../global-style.css';
 
-const posts = (await getCollection('microblog'))
-  .filter(p => p.slug.startsWith('en/'))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const externalLinks = [
+  {
+    name: 'GitHub',
+    url: 'https://github.com/bagi-sh',
+    icon: '/icons/github.svg',
+  },
+  {
+    name: 'Last.fm',
+    url: 'https://www.last.fm/user/bagi-sh',
+    icon: '/icons/lastfm.svg',
+  },
+  {
+    name: 'Email',
+    url: 'mailto:contact@bagi-sh.com',
+    icon: '/icons/email.svg',
+  },
+];
 ---
 
-<LayoutGlobal title="Bagi-sh.com | Low-Level Engineering & Cybersecurity" lang="en">
-  <section class="hero">
-    <h1>Bagi-sh.com</h1>
-    <p>Low-level software engineering, cybersecurity, and embedded systems.</p>
-  </section>
+<LayoutGlobal title="Bagi-sh.com | Low-Level Engineering & Security" lang="en">
+  <div class="hub-container">
+    <!-- Section A: Profile Header -->
+    <header class="profile-header">
+      <img src="/avatar.png" alt="Bagi Avatar" class="avatar-img" />
+      <div>
+        <h1>Bagi</h1>
+        <p class="handle">@bagi-sh</p>
+      </div>
+      <p class="bio">
+        Low-level software engineering, cybersecurity, and embedded systems.
+      </p>
+    </header>
 
-  <section class="feed">
-    <h2>Microblog</h2>
-    {posts.map(post => (
-      <article class="feed-item">
-        <h3>{post.data.title || 'Untitled'}</h3>
-        <time>{post.data.pubDate.toLocaleDateString('en-US')}</time>
-      </article>
-    ))}
-  </section>
+    <!-- Section B: Internal Navigation Hub -->
+    <section class="hub-nav-section">
+      <h2 class="section-title">Navigation Hub</h2>
+      <a href="/en/feed/" class="hub-card">
+        <div class="card-left">
+          <img src="/icons/feed.svg" alt="Feed" class="card-icon" />
+          <span>Microblog Feed</span>
+        </div>
+        <span class="ext-icon">&rarr;</span>
+      </a>
+      <a href="/en/projetos/project-alpha/" class="hub-card">
+        <div class="card-left">
+          <img src="/icons/folder.svg" alt="Projects" class="card-icon" />
+          <span>Project Portfolio</span>
+        </div>
+        <span class="ext-icon">&rarr;</span>
+      </a>
+      <a href="/en/docs/example-doc/" class="hub-card">
+        <div class="card-left">
+          <img src="/icons/book.svg" alt="Docs" class="card-icon" />
+          <span>Technical Documentation</span>
+        </div>
+        <span class="ext-icon">&rarr;</span>
+      </a>
+    </section>
+
+    <!-- Section C: Social & Contact Links -->
+    <section class="external-links-section">
+      <h2 class="section-title">Connect & Socials</h2>
+      {externalLinks.map(link => (
+        <a href={link.url} target="_blank" rel="noopener noreferrer" class="external-link-card">
+          <div class="card-left">
+            <img src={link.icon} alt={link.name} class="card-icon" />
+            <span>{link.name}</span>
+          </div>
+          <span class="ext-icon">&#8599;</span>
+        </a>
+      ))}
+    </section>
+  </div>
 </LayoutGlobal>

@@ -1,9 +1,10 @@
 ---
 /**
- * Portuguese Docs Route
+ * Portuguese Docs Route with Accordion Navigation
  */
 import { getCollection, type CollectionEntry } from 'astro:content';
 import LayoutGlobal from '../../../layouts/LayoutGlobal.astro';
+import '../../global-style.css';
 
 export async function getStaticPaths() {
   const docs = await getCollection('docs');
@@ -25,19 +26,39 @@ const { Content } = await entry.render();
 
 const currentSlug = entry.slug.replace(/^pt\//, '');
 const switchedPath = currentSlug === 'exemplo-doc' ? '/en/docs/example-doc/' : `/en/docs/${currentSlug}/`;
+
+// Sort docs by order if available
+const sortedDocs = [...allDocs].sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
 ---
 
 <LayoutGlobal title={`${entry.data.title} | Docs`} description={entry.data.description} lang="pt" switchedPath={switchedPath}>
   <div class="docs-container">
-    <aside class="docs-nav">
-      <h3>Documentação</h3>
-      <ul>
-        {allDocs.map(d => (
-          <li>
-            <a href={`/pt/docs/${d.slug.replace(/^pt\//, '')}/`}>{d.data.title}</a>
-          </li>
-        ))}
-      </ul>
+    <aside class="docs-accordion-sidebar">
+      <h3>
+        <img src="/icons/book.svg" alt="Docs Icon" class="card-icon" />
+        Documentação
+      </h3>
+
+      <details class="accordion-group" open>
+        <summary class="accordion-summary">
+          <span>Tópicos & Artigos</span>
+          <img src="/icons/chevron-right.svg" alt="Toggle" class="accordion-icon" />
+        </summary>
+        <ul class="accordion-item-list">
+          {sortedDocs.map(d => {
+            const slugPath = d.slug.replace(/^pt\//, '');
+            const isActive = slugPath === currentSlug;
+            return (
+              <li>
+                <a href={`/pt/docs/${slugPath}/`} class={isActive ? 'active' : ''}>
+                  <img src="/icons/file-text.svg" alt="Doc" style="width:14px; height:14px;" />
+                  <span>{d.data.title}</span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </details>
     </aside>
 
     <article class="doc-content">
