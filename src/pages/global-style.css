@@ -1,3 +1,260 @@
 /* 
   Global page styles - reserved for custom page-level overrides
 */
+
+:root {
+  --bg-color: #050505;
+  --fg-color: #cccccc;
+  --accent-color: #00ff66; /* Verde terminal */
+  --border-color: #333333;
+  --font-mono: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--fg-color);
+  font-family: var(--font-mono);
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* =========================================
+   Layout Global e Tipografia
+   ========================================= */
+.content-container {
+  flex: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  width: 100%;
+}
+
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+/* =========================================
+   Header
+   ========================================= */
+.site-header {
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem;
+}
+
+.header-container {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-logo {
+  color: var(--fg-color);
+  font-weight: bold;
+}
+
+.site-logo::before {
+  content: "$ ./";
+  color: var(--accent-color);
+}
+
+.site-nav {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.site-nav a {
+  color: var(--fg-color);
+  transition: all 0.1s linear;
+  padding: 0.2rem 0.5rem;
+}
+
+.site-nav a:hover,
+.site-nav a:focus {
+  background-color: var(--fg-color);
+  color: var(--bg-color);
+}
+
+.lang-switch {
+  border: 1px solid var(--border-color);
+}
+
+/* =========================================
+   Footer
+   ========================================= */
+.site-footer {
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  color: #666666;
+}
+
+/* =========================================
+   Landing Page Hub (Linktree)
+   ========================================= */
+.hub-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.profile-header {
+  text-align: center;
+  border: 1px dashed var(--border-color);
+  padding: 2rem;
+}
+
+.avatar-img {
+  width: 96px;
+  height: 96px;
+  border: 1px solid var(--accent-color);
+  margin-bottom: 1rem;
+  border-radius: 0;
+  image-rendering: pixelated;
+}
+
+.handle {
+  color: var(--accent-color);
+  margin-bottom: 1rem;
+}
+
+.bio {
+  font-size: 0.95rem;
+}
+
+.section-title {
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #888888;
+}
+
+.hub-card,
+.external-link-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  margin-bottom: 0.8rem;
+  transition: all 0.1s linear;
+}
+
+.hub-card:hover,
+.external-link-card:hover {
+  border-color: var(--accent-color);
+  background-color: #111111;
+}
+
+.hub-card:hover .ext-icon,
+.external-link-card:hover .ext-icon {
+  color: var(--accent-color);
+}
+
+.card-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card-icon {
+  width: 20px;
+  height: 20px;
+  filter: invert(1);
+}
+
+/* =========================================
+   Microblog Feed
+   ========================================= */
+.post-card {
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  background-color: #0a0a0a;
+}
+
+.post-card h2 {
+  color: var(--fg-color);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.post-card time {
+  font-size: 0.85rem;
+  color: #666666;
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+.feed-details summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.feed-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary-preview {
+  margin-top: 1rem;
+  color: #999999;
+}
+
+.expand-btn-wrapper {
+  display: block;
+  margin-top: 1rem;
+}
+
+.expand-btn {
+  color: var(--bg-color);
+  background-color: var(--border-color);
+  padding: 0.2rem 0.5rem;
+  font-size: 0.85rem;
+  transition: all 0.1s linear;
+}
+
+.feed-details:hover .expand-btn {
+  background-color: var(--accent-color);
+}
+
+.feed-details[open] .summary-preview,
+.feed-details[open] .expand-btn-wrapper {
+  display: none;
+}
+
+.preview-image {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+  filter: grayscale(100%);
+  transition: all 0.1s linear;
+}
+
+.preview-image:hover {
+  filter: grayscale(0%);
+}
+
+.post-content p {
+  margin-bottom: 1rem;
+}
