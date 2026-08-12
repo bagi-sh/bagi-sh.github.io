@@ -54,15 +54,24 @@ h3 {
    ========================================= */
 .site-header {
   border-bottom: 1px solid var(--border-color);
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .header-container {
   max-width: 720px;
   margin: 0 auto;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  white-space: nowrap;
 }
 
 .site-logo {
@@ -77,8 +86,9 @@ h3 {
 
 .site-nav {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.2rem;
   align-items: center;
+  white-space: nowrap;
 }
 
 .site-nav a {
@@ -273,7 +283,7 @@ h3 {
   color: #666666;
   border: 1px solid var(--border-color, #222);
   padding: 0.1rem 0.4rem;
-  max-width: 250px;
+  max-width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

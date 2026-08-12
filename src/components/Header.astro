@@ -57,7 +57,7 @@ if (!switchedPath) {
   let clickCount = 0;
   let resetTimer: ReturnType<typeof setTimeout>;
 
-  const logo = document.querySelector('.site-logo');
+  const logo = document.querySelector('.lastfm-container');
 
   logo?.addEventListener('click', (e) => {
     clickCount++;
@@ -73,16 +73,17 @@ if (!switchedPath) {
   });
 </script>
   <div class="header-container">
-    <a href={`/${lang}/`} class="site-logo">Bagi-sh</a>
-    <div 
-       id="lastfm-widget" 
-       class="lastfm-container" 
-       data-api-key={apiKey} 
-       data-username={usernameFm}
-     >
+    <div class="header-left"
+      <a> href={`/${lang}/`} class="site-logo">Bagi-sh</a>
+      <div 
+        id="lastfm-widget" 
+        class="lastfm-container" 
+        data-api-key={apiKey} 
+        data-username={usernameFm}
+      >
        <span class="music-icon">♫</span>
        <span id="lastfm-track" class="track-info">listening to nothing...</span>
-     </div>
+      </div>
     </div>
     
     <nav class="site-nav">
