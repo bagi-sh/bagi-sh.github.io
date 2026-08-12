@@ -50,6 +50,25 @@ if (!switchedPath) {
 ---
 
 <header class="site-header">
+<script>
+  let clickCount = 0;
+  let resetTimer: NodeJS.Timeout;
+
+  const logo = document.querySelector('.site-logo');
+
+  logo?.addEventListener('click', (e) => {
+    clickCount++;
+    
+    clearTimeout(resetTimer);
+    resetTimer = setTimeout(() => { clickCount = 0; }, 2000);
+
+    if (clickCount === 5) {
+      e.preventDefault();
+      alert("ROOT ACCESS GRANTED: You found the secret terminal endpoint!");
+      clickCount = 0;
+    }
+  });
+</script>
   <div class="header-container">
     <a href={`/${lang}/`} class="site-logo">Bagi-sh</a>
     

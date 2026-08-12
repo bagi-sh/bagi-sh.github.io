@@ -1,8 +1,17 @@
----
-/**
- * Global Layout Wrapper
- * Pure HTML5 boilerplate, 0 client-side JS overhead.
- */
+<!--
+   ____             _       ____  _     
+  | __ )  __ _  __ _(_)     / ___|| |__  
+  |  _ \ / _` |/ _` | |_____|___ \| '_ \ 
+  | |_) | (_| | (_| | |_____|___) | | | |
+  |____/ \__,_|\__, |_|     |____/|_| |_|
+               |___/                     
+  =======================================
+
+  Curious developer, are you? Welcome.
+  try to find all the easter eggs and 
+  email me if you find.
+-->
+
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { getLangFromUrl, type Lang } from '../i18n/ui';
@@ -31,11 +40,29 @@ const {
     <meta name="description" content={description} />
     <title>{title}</title>
   </head>
+  <KonamiEasteregg/>
   <body>
     <Header lang={currentLang} switchedPath={switchedPath} />
     <main class="content-container">
       <slot />
     </main>
+  <script>
+    const asciiArt = `
+     /\_/\\
+    ( o.o )
+     > ^ <   [Bagi-sh.com]
+  `;
+  
+  console.log(
+    `%c${asciiArt}\n%cBe welcome. Looking for vulnerabilities or just browsing?`,
+    "color: #00ff66; font-family: monospace; font-weight: bold;",
+    "color: #cccccc; font-family: monospace;"
+  );
+
+  (window as any).secret = function() {
+    console.log("%c[+] UNLOCKED: YOU JUST FOUND A SECRET AND YOUR PRIZE IS ABSOLUT NOTHING!! CONGRATS.", "color: #00ff66; font-family: monospace;");
+  };
+</script>
     <Footer lang={currentLang} />
   </body>
 </html>

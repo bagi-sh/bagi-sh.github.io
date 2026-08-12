@@ -124,12 +124,11 @@ h3 {
 }
 
 .avatar-img {
-  width: 96px;
-  height: 96px;
+  width: 150px;
+  height: 150px;
   border: 1px solid var(--accent-color);
   margin-bottom: 1rem;
   border-radius: 0;
-  image-rendering: pixelated;
 }
 
 .handle {

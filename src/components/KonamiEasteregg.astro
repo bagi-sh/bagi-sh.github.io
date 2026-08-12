@@ -1,0 +1,92 @@
+<div id="konami-overlay" class="hidden-overlay">
+  <div class="overlay-content">
+    <img src="/assets/meme(1).gif" alt="Easter Egg Meme" class="meme-gif" />
+    <p class="overlay-text">  CHEAT CODE ACTIVATED  </p>
+    <button id="close-overlay-btn">[ CLOSE ]</button>
+  </div>
+</div>
+
+<!-- liked my eater egg? so, is joyful to hide this type of thin, i will try more -->
+
+<script>
+  const konamiCode = [
+    'ArrowUp', 'ArrowUp', 
+    'ArrowDown', 'ArrowDown', 
+    'ArrowLeft', 'ArrowRight', 
+    'ArrowLeft', 'ArrowRight', 
+    'b', 'a'
+  ];
+  let inputSequence: string[] = [];
+
+  window.addEventListener('keydown', (e) => {
+    inputSequence.push(e.key);
+    inputSequence = inputSequence.slice(-konamiCode.length);
+
+    if (JSON.stringify(inputSequence) === JSON.stringify(konamiCode)) {
+      triggerEasterEgg();
+    }
+  });
+
+  function triggerEasterEgg() {
+    const overlay = document.getElementById('konami-overlay');
+    if (overlay) {
+      overlay.classList.add('active');
+    }
+  }
+
+  document.getElementById('close-overlay-btn')?.addEventListener('click', () => {
+    document.getElementById('konami-overlay')?.classList.remove('active');
+  });
+</script>
+
+<style>
+  .hidden-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(5, 5, 5, 0.95);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hidden-overlay.active {
+    display: flex;
+  }
+
+  .overlay-content {
+    border: 1px solid var(--accent-color, #00ff66);
+    padding: 2rem;
+    background-color: #050505;
+    text-align: center;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .meme-gif {
+    max-width: 300px;
+    border: 1px solid var(--border-color, #333);
+    margin-bottom: 1rem;
+  }
+
+  .overlay-text {
+    color: var(--accent-color, #00ff66);
+    margin-bottom: 1rem;
+  }
+
+  #close-overlay-btn {
+    background: transparent;
+    border: 1px solid var(--border-color, #333);
+    color: var(--fg-color, #ccc);
+    padding: 0.5rem 1rem;
+    font-family: var(--font-mono, monospace);
+    cursor: pointer;
+  }
+
+  #close-overlay-btn:hover {
+    background-color: var(--accent-color, #00ff66);
+    color: #000;
+  }
+</style>

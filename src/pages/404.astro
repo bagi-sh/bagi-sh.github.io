@@ -1,0 +1,235 @@
+---
+import LayoutGlobal from '../layouts/LayoutGlobal.astro';
+import '../styles/global.css';
+
+// Lista de mensagens de erro aleatórias / desalinhadas
+const erros = [
+  "ERR_MEM_CORRUPT_0x00404",
+  "SYSTEM_COLLAPSE_DETECTED",
+  "SEGMENTATION FAULT (core dumped)",
+  "KERNEL PANIC: NOT A VALID ROUTE",
+  "PAGE NOT FOUND (AND NEVER WAS)",
+];
+---
+
+<LayoutGlobal title="404 :: SYSTEM_CRASH | Bagi-sh.com">
+  <div class="chaos-wrapper">
+    
+    <!-- ASCII Art Central Torta -->
+    <pre class="ascii-art ascii-main">
+  __  _  _   _  _   
+ /  || || | / || |  
+|  || || |_| || |_ 
+|__||_||___|_||___|
+ [CRASH_DETECTED]
+    </pre>
+
+    <!-- ASCII Arts Secundárias Espalhadas -->
+    <pre class="ascii-art ascii-float-1">
+   /\_/\  
+  ( o.o ) ? 
+   > ^ <
+  LOST IN DISK?
+    </pre>
+
+    <pre class="ascii-art ascii-float-2">
+  [!] 404
+  +------+
+  | NULL |
+  +------+
+    </pre>
+
+    <!-- GIFs Espalhados (Certifique-se de salvar os gifs na pasta /public/memes/) -->
+    <div class="gif-box gif-1">
+      <img src="/memes/scuuba.gif" alt="Cat Error" />
+      <span class="gif-tag">> ERR_NULL_PTR</span>
+    </div>
+
+    <div class="gif-box gif-2">
+      <img src="/memes/static.gif" alt="Static Noise" />
+      <span class="gif-tag">> NO_SIGNAL</span>
+    </div>
+
+    <div class="gif-box gif-3">
+      <img src="/memes/dancing-skeleton.gif" alt="Dancing Skeleton" />
+    </div>
+
+    <!-- Bloco de Texto Desordenado -->
+    <div class="text-block text-1">
+      <h1>404 PAGE NOT FOUND</h1>
+      <p>{erros[0]}</p>
+    </div>
+
+    <div class="text-block text-2">
+      <p>{erros[2]}</p>
+      <a href="/pt/" class="terminal-btn">[ ESCAPE TO /PT/ ]</a>
+    </div>
+
+    <div class="text-block text-3">
+      <p>{erros[3]}</p>
+      <a href="/en/" class="terminal-btn">[ ESCAPE TO /EN/ ]</a>
+    </div>
+
+  </div>
+</LayoutGlobal>
+
+<style>
+  /* Contêiner em tela cheia sem barras de rolagem desnecessárias */
+  .chaos-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 80vh;
+    overflow: hidden;
+    font-family: var(--font-mono, monospace);
+    color: var(--fg-color, #ccc);
+  }
+
+  /* Estilização Base de ASCII Art */
+  .ascii-art {
+    position: absolute;
+    font-family: var(--font-mono, monospace);
+    line-height: 1.1;
+    color: var(--accent-color, #00ff66);
+    user-select: none;
+    white-space: pre;
+  }
+
+  .ascii-main {
+    top: 5%;
+    left: 20%;
+    transform: rotate(-4deg);
+    font-size: 1.2rem;
+    border: 1px dashed var(--accent-color, #00ff66);
+    padding: 1rem;
+    background: #000;
+  }
+
+  .ascii-float-1 {
+    top: 55%;
+    left: 2%;
+    transform: rotate(7deg);
+    color: #ff5555;
+  }
+
+  .ascii-float-2 {
+    top: 12%;
+    right: 5%;
+    transform: rotate(-12deg);
+    color: #ffff55;
+  }
+
+  /* Caixas de GIFs Espalhadas */
+  .gif-box {
+    position: absolute;
+    border: 1px solid var(--border-color, #333);
+    background-color: #050505;
+    padding: 0.3rem;
+  }
+
+  .gif-box img {
+    display: block;
+    max-width: 180px;
+    height: auto;
+    filter: grayscale(80%);
+  }
+
+  .gif-box:hover img {
+    filter: grayscale(0%);
+  }
+
+  .gif-tag {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--accent-color, #00ff66);
+    margin-top: 0.2rem;
+  }
+
+  .gif-1 {
+    top: 35%;
+    right: 15%;
+    transform: rotate(8deg);
+  }
+
+  .gif-2 {
+    top: 60%;
+    left: 35%;
+    transform: rotate(-5deg);
+  }
+
+  .gif-3 {
+    top: 2%;
+    right: 38%;
+    transform: rotate(15deg);
+  }
+
+  /* Blocos de Texto Tortos */
+  .text-block {
+    position: absolute;
+    background: #0a0a0a;
+    border: 1px solid var(--border-color, #333);
+    padding: 0.8rem;
+  }
+
+  .text-1 {
+    top: 38%;
+    left: 5%;
+    transform: rotate(-3deg);
+  }
+
+  .text-1 h1 {
+    font-size: 1.4rem;
+    color: #ff5555;
+    margin: 0;
+  }
+
+  .text-2 {
+    bottom: 5%;
+    left: 15%;
+    transform: rotate(4deg);
+  }
+
+  .text-3 {
+    bottom: 10%;
+    right: 8%;
+    transform: rotate(-6deg);
+  }
+
+  /* Botões de Fuga */
+  .terminal-btn {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    background-color: #111;
+    color: var(--accent-color, #00ff66);
+    border: 1px solid var(--accent-color, #00ff66);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.1s linear;
+  }
+
+  .terminal-btn:hover {
+    background-color: var(--accent-color, #00ff66);
+    color: #000;
+  }
+
+  /* Ajuste para telas menores (Dispositivos móveis) */
+  @media (max-width: 600px) {
+    .chaos-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      position: static;
+      padding: 1rem;
+    }
+
+    .ascii-art, .gif-box, .text-block {
+      position: static;
+      transform: none !important;
+      max-width: 100%;
+    }
+
+    .gif-box img {
+      max-width: 100%;
+    }
+  }
+</style>
