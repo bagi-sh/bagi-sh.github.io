@@ -2,7 +2,8 @@
 /**
  * Portuguese Landing Page Hub / Linktree
  */
-import LayoutGlobal from '../../layouts/LayoutGlobal.astro';
+ import LayoutGlobal from '../../layouts/LayoutGlobal.astro';
+ import WeeklyStats from '../../components/WeeklyStats.astro';
 import '../global-style.css';
 
 const externalLinks = [
@@ -25,48 +26,54 @@ const externalLinks = [
 ---
 
 <LayoutGlobal title="Bagi-sh.com | Engenharia & Cibersegurança" lang="pt">
-  <div class="hub-container">
-    <!-- Seção A: Perfil (Header) -->
-    <header class="profile-header">
-      <img src="/icons/avatar.png" alt="Avatar de Bagi" class="avatar-img" />
-      <div>
-        <h1>Bagi</h1>
-        <p class="handle">@bagi-sh</p>
-      </div>
-      <p class="bio">
-      Programação baixo nível, Cibersegurança e Arquitetura de Software
+  <section class="hero-section scroll-reveal">
+    <div class="avatar-container">
+      <img src="/icons/avatar.png" alt="BAGI" class="profile-avatar" />
+    </div>
+    <div class="hero-bio">
+      <h1 class="username">BAGI</h1>
+      <span class="handle">@bagi-sh</span>
+      <p class="description">
+      Programação de baixo nível, Cibersegurança &amp; Arquitetura de Software.
       </p>
-    </header>
-
+    </div>
+  </section>
     <!-- Seção B: Navegação Interna (Hub) -->
-    <section class="hub-nav-section">
-      <h2 class="section-title">Navegação Interna</h2>
-      <a href="/pt/feed/" class="hub-card">
+ <section class="hub-nav-section scroll-reveal">
+    <div class="section-desc">
+      <h2 class="section-title">Hub de Navegação</h2>
+      <p>
+      Documentação interna de projetos, portfolio, notas tecnicas e evolução acompanhada.
+      </p>
+    </div>
+
+    <div class="cards-group">
+      <a href="/en/feed/" class="hub-card">
         <div class="card-left">
           <img src="/icons/feed.svg" alt="Feed" class="card-icon" />
-          <span>Microblog (Feed)</span>
+          <span>Microblog Feed</span>
         </div>
         <span class="ext-icon">&rarr;</span>
       </a>
-      <a href="/pt/projetos/projeto-alpha/" class="hub-card">
+      <a href="/en/projetos/project-alpha/" class="hub-card">
         <div class="card-left">
-          <img src="/icons/folder.svg" alt="Projetos" class="card-icon" />
-          <span>Portfólio de Projetos</span>
+          <img src="/icons/folder.svg" alt="Projects" class="card-icon" />
+          <span>Projects Portfolio</span>
         </div>
         <span class="ext-icon">&rarr;</span>
       </a>
-      <a href="/pt/docs/exemplo-doc/" class="hub-card">
+      <a href="/en/docs/example-doc/" class="hub-card">
         <div class="card-left">
-          <img src="../icons/book.svg" alt="Docs" class="card-icon" />
-          <span>Documentação Técnica</span>
+          <img src="/icons/book.svg" alt="Docs" class="card-icon" />
+          <span>Technical Documentation</span>
         </div>
         <span class="ext-icon">&rarr;</span>
       </a>
-    </section>
-
-    <!-- Seção C: Contatos e Redes (Links Externos) -->
-    <section class="external-links-section">
-      <h2 class="section-title">Contatos e Redes</h2>
+    </div>
+ </section> 
+ <!-- Seção C: Contatos e Redes (Links Externos) -->
+<section class="external-links-section scroll-reveal">
+    <div class="cards-group">
       {externalLinks.map(link => (
         <a href={link.url} target="_blank" rel="noopener noreferrer" class="external-link-card">
           <div class="card-left">
@@ -76,8 +83,15 @@ const externalLinks = [
           <span class="ext-icon">&#8599;</span>
         </a>
       ))}
-    </section>
-  </div>
+    </div>
+
+    <div class="section-desc">
+      <h2 class="section-title">Connect &amp; Socials</h2>
+      <p>
+      Perfis públicos, GitHub, status musicais e contato direto.
+      </p>
+    </div>
+  </section>
 <!-- 
 ⠀⠀⠀⠀⠀⠀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣷⣶⣶⣶⣶⣶⣶⣤⣄⣀⣀⣀⣀⣀⡀⠀⠀⠀
@@ -93,4 +107,24 @@ const externalLinks = [
 ⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀
 this is "Bereguejoson". Dont touch -->
+<script>
+    const observerOptions = {
+      root: null,
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+    });
+  </script>
+<WeeklyStats/>
 </LayoutGlobal>

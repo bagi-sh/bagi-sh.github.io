@@ -67,7 +67,9 @@ if (!switchedPath) {
 
     if (clickCount === 5) {
       e.preventDefault();
-      alert("ROOT ACCESS GRANTED: You found the secret terminal endpoint!");
+      // adicionar um "estado". caso a pessoa veja a mensagem, ela possa eventualmente
+      // usar o sudo no terminal d0 404 page
+      alert("Why are you click in here? Ok, so I you give you Sudo access for this");
       clickCount = 0;
     }
   });
