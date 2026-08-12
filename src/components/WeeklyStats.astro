@@ -1,0 +1,135 @@
+---
+// src/components/WeeklyStats.astro
+import { getWeeklyStats } from '../lib/lastfm-week-stats.ts';
+
+const apiKey = import.meta.env.PUBLIC_LASTFM_API_KEY || '';
+const username = import.meta.env.PUBLIC_LASTFM_USERNAME || '';
+
+// Executado exclusivamente em tempo de BUILD no servidor/runner
+const stats = await getWeeklyStats(username, apiKey);
+---
+
+{stats ? (
+  <div class="stats-grid">
+    
+    <!-- TOP ARTISTAS -->
+    <div class="stats-column">
+      <h3 class="column-title">:: TOP 3 ARTISTS</h3>
+      <ul class="stats-list">
+        {stats.artists.map((artist, idx) => (
+          <li>
+            <span class="rank">0{idx + 1}.</span>
+            <div class="item-details">
+              <a href={artist.url} target="_blank" rel="noopener noreferrer" class="item-name">{artist.name}</a>
+              <span class="item-subtext">{artist.subtext}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- TOP ÁLBUNS -->
+    <div class="stats-column">
+      <h3 class="column-title">:: TOP 3 ALBUMS</h3>
+      <ul class="stats-list">
+        {stats.albums.map((album, idx) => (
+          <li>
+            <span class="rank">0{idx + 1}.</span>
+            <div class="item-details">
+              <a href={album.url} target="_blank" rel="noopener noreferrer" class="item-name">{album.name}</a>
+              <span class="item-subtext">{album.subtext}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- TOP MÚSICAS -->
+    <div class="stats-column">
+      <h3 class="column-title">:: TOP 3 TRACKS</h3>
+      <ul class="stats-list">
+        {stats.tracks.map((track, idx) => (
+          <li>
+            <span class="rank">0{idx + 1}.</span>
+            <div class="item-details">
+              <a href={track.url} target="_blank" rel="noopener noreferrer" class="item-name">{track.name}</a>
+              <span class="item-subtext">{track.subtext}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+  </div>
+) : (
+  <div class="stats-offline">
+    <p>[!] WEEKLY STATS UNREACHABLE AT BUILD TIME</p>
+  </div>
+)}
+
+<style>
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    border: 1px solid var(--border-color, #222);
+    padding: 1rem;
+    background-color: #050505;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .column-title {
+    font-size: 0.85rem;
+    color: var(--accent-color, #00ff66);
+    margin-bottom: 0.8rem;
+    border-bottom: 1px dashed var(--border-color, #222);
+    padding-bottom: 0.3rem;
+  }
+
+  .stats-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .stats-list li {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .rank {
+    color: #555;
+  }
+
+  .item-details {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .item-name {
+    color: var(--fg-color, #ccc);
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .item-name:hover {
+    color: var(--accent-color, #00ff66);
+  }
+
+  .item-subtext {
+    font-size: 0.7rem;
+    color: #666;
+  }
+
+  .stats-offline {
+    border: 1px dashed #333;
+    padding: 1rem;
+    font-size: 0.8rem;
+    color: #666;
+  }
+</style>
