@@ -16,6 +16,9 @@ const t = useTranslations(lang);
 const targetLang: Lang = lang === 'pt' ? 'en' : 'pt';
 const targetLabel = lang === 'pt' ? 'EN' : 'PT';
 
+const apiKey = import.meta.env.PUBLIC_LASTFM_API_KEY;
+const usernameFm = import.meta.env.PUBLIC_LASTFM_USERNAME;
+
 // Correct path per language
 const projectPath = lang === 'pt' ? '/pt/projetos/projeto-alpha/' : '/en/projetos/project-alpha/';
 const docPath = lang === 'pt' ? '/pt/docs/exemplo-doc/' : '/en/docs/example-doc/';
@@ -71,6 +74,16 @@ if (!switchedPath) {
 </script>
   <div class="header-container">
     <a href={`/${lang}/`} class="site-logo">Bagi-sh</a>
+    <div 
+       id="lastfm-widget" 
+       class="lastfm-container" 
+       data-api-key={apiKey} 
+       data-username={usernameFm}
+     >
+       <span class="music-icon">♫</span>
+       <span id="lastfm-track" class="track-info">listening to nothing...</span>
+     </div>
+    </div>
     
     <nav class="site-nav">
       <a href={`/${lang}/`}>{t('nav.home')}</a>
@@ -81,3 +94,37 @@ if (!switchedPath) {
     </nav>
   </div>
 </header>
+
+<script>
+  import { getNowPlaying } from '../lib/lastfm';
+
+  async function updateWidget(): Promise<void> {
+    const container = document.getElementById('lastfm-widget');
+    const trackElement = document.getElementById('lastfm-track');
+
+    if (!container || !trackElement) return;
+
+    const apiKey = container.dataset.apiKey || '';
+    const username = container.dataset.username || '';
+
+    const data = await getNowPlaying(username, apiKey);
+
+    if (!data) {
+      trackElement.textContent = 'offline';
+      container.classList.remove('is-playing');
+      return;
+    }
+
+    trackElement.textContent = data.isPlaying ? `▶ ${data.text}` : `[last] ${data.text}`;
+    trackElement.setAttribute('title', `${data.text} (${data.isPlaying ? 'Now Playing' : 'Last Played'})`);
+
+    if (data.isPlaying) {
+      container.classList.add('is-playing');
+    } else {
+      container.classList.remove('is-playing');
+    }
+  }
+
+  updateWidget();
+  setInterval(updateWidget, 30000);
+</script>

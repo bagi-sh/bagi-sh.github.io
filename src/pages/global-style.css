@@ -257,3 +257,45 @@ h3 {
 .post-content p {
   margin-bottom: 1rem;
 }
+
+.branding-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Widget Last.fm */
+.lastfm-container {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: #666666;
+  border: 1px solid var(--border-color, #222);
+  padding: 0.1rem 0.4rem;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-icon {
+  color: #555;
+  font-size: 0.8rem;
+}
+
+.track-info {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Estabilização para quando estiver tocando agora */
+.lastfm-container.is-playing {
+  border-color: var(--accent-color, #00ff66);
+  color: var(--fg-color, #ccc);
+}
+
+.lastfm-container.is-playing .music-icon {
+  color: var(--accent-color, #00ff66);
+}
