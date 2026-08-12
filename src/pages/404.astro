@@ -2,7 +2,6 @@
 import LayoutGlobal from '../layouts/LayoutGlobal.astro';
 import '../styles/global.css';
 
-// Lista de mensagens de erro aleatórias / desalinhadas
 const erros = [
   "ERR_MEM_CORRUPT_0x00404",
   "SYSTEM_COLLAPSE_DETECTED",
@@ -12,19 +11,19 @@ const erros = [
 ];
 ---
 
-<LayoutGlobal title="404 :: SYSTEM_CRASH | Bagi-sh.com">
+<LayoutGlobal title="ERROR::404 | Bagi-sh">
   <div class="chaos-wrapper">
     
-    <!-- ASCII Art Central Torta -->
     <pre class="ascii-art ascii-main">
-  __  _  _   _  _   
- /  || || | / || |  
-|  || || |_| || |_ 
-|__||_||___|_||___|
+    ___ _____    ___ 
+  /   |  _  |  /   |
+ / /| | |/' | / /| |
+/ /_| |  /| |/ /_| |
+\___  \ |_/ /\___  |
+    |_/\___/     |_/
  [CRASH_DETECTED]
     </pre>
 
-    <!-- ASCII Arts Secundárias Espalhadas -->
     <pre class="ascii-art ascii-float-1">
    /\_/\  
   ( o.o ) ? 
@@ -33,13 +32,22 @@ const erros = [
     </pre>
 
     <pre class="ascii-art ascii-float-2">
-  [!] 404
-  +------+
-  | NULL |
-  +------+
-    </pre>
+⠀⠀⠀⠀⠀⠀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣷⣶⣶⣶⣶⣶⣶⣤⣄⣀⣀⣀⣀⣀⡀⠀⠀⠀
+⠀⠀⠀⠀⠀⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀
+⠀⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀⠀
+⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠀⠀⠀⠀
+⠀⠀⠀⠀⣿⣿⣿⣿⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀
+⠀⠀⠀⠀⠸⣿⣿⣿⣦⡀⠀⣹⣿⣿⣿⣿⠟⠉⠉⠙⣻⣿⣿⡟⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠘⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣤⣴⣿⣿⣿⠟⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢠⣾⣿⣿⣿⣿⣦⣴⣿⣿⣿⣿⣿⣿⠟⠉⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀
 
-    <!-- GIFs Espalhados (Certifique-se de salvar os gifs na pasta /public/memes/) -->
+     </pre>
+
     <div class="gif-box gif-1">
       <img src="/memes/scuuba.gif" alt="Cat Error" />
       <span class="gif-tag">> ERR_NULL_PTR</span>
@@ -51,7 +59,7 @@ const erros = [
     </div>
 
     <div class="gif-box gif-3">
-      <img src="/memes/dancing-skeleton.gif" alt="Dancing Skeleton" />
+      <img src="/memes/cr7.webp" alt="Dancing Skeleton" />
     </div>
 
     <!-- Bloco de Texto Desordenado -->
@@ -71,10 +79,105 @@ const erros = [
     </div>
 
   </div>
+<div class="terminal-wrapper">
+  <div class="terminal-header">
+    <span class="status-dot"></span>
+    <span class="terminal-title">bash - 404 NOT FOUND</span>
+  </div>
+
+  <div id="terminal-output" class="terminal-output">
+    <div class="line">404: Page not found. Terminal access granted.</div>
+    <div class="line">Type <span class="highlight">'help'</span> for a list of available commands.</div>
+  </div>
+
+  <div class="input-line">
+    <span class="prompt">visitor@bagi-sh:~$</span>
+    <input 
+      type="text" 
+      id="cli-input" 
+      class="cli-input" 
+      autocomplete="off" 
+      autofocus 
+      spellcheck="false"
+    />
+  </div>
+</div>
+
+<script>
+  import { commands, executeCommand } from '../lib/cli-engine.ts';
+
+  const inputEl = document.getElementById('cli-input') as HTMLInputElement | null;
+  const outputEl = document.getElementById('terminal-output') as HTMLDivElement | null;
+
+  // Estado do Histórico de Comandos
+  const history: string[] = [];
+  let historyIndex = -1;
+
+  if (inputEl && outputEl) {
+    // Manter foco no input se o usuário clicar no terminal
+    document.addEventListener('click', () => inputEl.focus());
+
+    inputEl.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        const rawValue = inputEl.value;
+        
+        if (rawValue.trim() !== '') {
+          history.push(rawValue);
+          historyIndex = history.length;
+        }
+
+        // Renderizar a linha digitada pelo usuário no buffer do terminal
+        appendLine(`visitor@bagi-sh:~$ ${rawValue}`, 'prompt-echo');
+
+        // Processar execução através do módulo TS
+        const result = executeCommand(rawValue, commands);
+
+        if (result.isClearCommand) {
+          outputEl.innerHTML = '';
+        } else if (result.output) {
+          appendLine(result.output, 'command-response');
+        }
+
+        inputEl.value = '';
+        scrollToBottom();
+      } 
+      else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (history.length > 0 && historyIndex > 0) {
+          historyIndex--;
+          inputEl.value = history[historyIndex];
+        }
+      } 
+      else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (historyIndex < history.length - 1) {
+          historyIndex++;
+          inputEl.value = history[historyIndex];
+        } else {
+          historyIndex = history.length;
+          inputEl.value = '';
+        }
+      }
+    });
+  }
+
+  function appendLine(text: string, className: string): void {
+    if (!outputEl) return;
+    const line = document.createElement('div');
+    line.className = `line ${className}`;
+    line.textContent = text;
+    outputEl.appendChild(line);
+  }
+
+  function scrollToBottom(): void {
+    if (!outputEl) return;
+    outputEl.scrollTop = outputEl.scrollHeight;
+  }
+</script>
+
 </LayoutGlobal>
 
 <style>
-  /* Contêiner em tela cheia sem barras de rolagem desnecessárias */
   .chaos-wrapper {
     position: relative;
     width: 100%;
@@ -84,7 +187,6 @@ const erros = [
     color: var(--fg-color, #ccc);
   }
 
-  /* Estilização Base de ASCII Art */
   .ascii-art {
     position: absolute;
     font-family: var(--font-mono, monospace);
@@ -231,5 +333,85 @@ const erros = [
     .gif-box img {
       max-width: 100%;
     }
+  }
+
+.terminal-wrapper {
+    background-color: #050505;
+    border: 1px solid var(--border-color, #222);
+    font-family: var(--font-mono, monospace);
+    padding: 1rem;
+    max-width: 700px;
+    margin: 2rem auto;
+    color: #ccc;
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px dashed #222;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #ff5555;
+    border-radius: 50%;
+  }
+
+  .terminal-title {
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+  .terminal-output {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .line {
+    font-size: 0.85rem;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .highlight {
+    color: var(--accent-color, #00ff66);
+  }
+
+  .prompt-echo {
+    color: #888;
+  }
+
+  .command-response {
+    color: #eee;
+  }
+
+  .input-line {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .prompt {
+    font-size: 0.85rem;
+    color: var(--accent-color, #00ff66);
+    white-space: nowrap;
+  }
+
+  .cli-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.85rem;
+    width: 100%;
   }
 </style>
