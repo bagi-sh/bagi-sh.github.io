@@ -70,6 +70,37 @@ h3 {
   align-items: center;
   gap: 1.2rem;
   white-space: nowrap;
+  min-width: 0;
+}
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+
+  .header-left {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .site-nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    overflow-x: auto; /* Garante rolagem suave se os links forem extensos */
+    gap: 0.5rem;
+  }
+
+  .site-nav a {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.85rem;
+  }
+
+  /* Limita o widget do Last.fm para não estourar o container em telas móveis */
+  .lastfm-container {
+    max-width: 140px;
+  }
 }
 
 .site-logo {
@@ -280,7 +311,7 @@ h3 {
   color: #666666;
   border: 1px solid var(--border-color, #222);
   padding: 0.1rem 0.4rem;
-  max-width: 600px;
+  max-width: 400px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

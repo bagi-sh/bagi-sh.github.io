@@ -132,4 +132,11 @@ const stats = await getWeeklyStats(username, apiKey);
     font-size: 0.8rem;
     color: #666;
   }
+/* Força empilhamento perfeito de 1 coluna em smartphones */
+  @media (max-width: 768px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+  }
 </style>
