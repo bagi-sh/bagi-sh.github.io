@@ -21,7 +21,7 @@ const usernameFm = import.meta.env.PUBLIC_LASTFM_USERNAME;
 
 // Correct path per language
 const projectPath = lang === 'pt' ? '/pt/projetos/projeto-alpha/' : '/en/projetos/project-alpha/';
-const docPath = lang === 'pt' ? '/pt/docs/exemplo-doc/' : '/en/docs/example-doc/';
+const docPath = lang === 'pt' ? '/pt/docs/' : '/en/docs/';
 
 // Smart language switch calculation
 let switchedPath = customSwitchedPath;
@@ -36,8 +36,8 @@ if (!switchedPath) {
     '/en/feed/': '/pt/feed/',
     '/pt/projetos/projeto-alpha/': '/en/projetos/project-alpha/',
     '/en/projetos/project-alpha/': '/pt/projetos/projeto-alpha/',
-    '/pt/docs/exemplo-doc/': '/en/docs/example-doc/',
-    '/en/docs/example-doc/': '/pt/docs/exemplo-doc/',
+    '/pt/docs/': '/en/docs/',
+    '/en/docs/': '/pt/docs/',
   };
 
   const normalizedPath = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
