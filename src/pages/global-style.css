@@ -3,7 +3,7 @@
 :root {
   --bg-color: #050505;
   --fg-color: #cccccc;
-  --accent-color: #00ff66; /* Terminal Green */
+  --accent-color: #00ff66;
   --border-color: #333333;
   --font-mono: "JetBrains Mono", "Fira Code", "Courier New", monospace;
 }
@@ -262,4 +262,47 @@ h3 {
     text-align: left;
     order: -1;
   }
+}
+/* =========================================
+   Branding Group & Widget Last.fm
+   ========================================= */
+.branding-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.lastfm-container {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: #666666;
+  border: 1px solid var(--border-color, #222);
+  padding: 0.1rem 0.4rem;
+  max-width: 600px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-icon {
+  color: #555555;
+  font-size: 0.8rem;
+}
+
+.track-info {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Estado de Execução (Playing) */
+.lastfm-container.is-playing {
+  border-color: var(--accent-color, #00ff66);
+  color: var(--fg-color, #ccc);
+}
+
+.lastfm-container.is-playing .music-icon {
+  color: var(--accent-color, #00ff66);
 }

@@ -1,11 +1,9 @@
-/* 
-  Global page styles - reserved for custom page-level overrides
-*/
+/* Global CSS Rules */
 
 :root {
   --bg-color: #050505;
   --fg-color: #cccccc;
-  --accent-color: #00ff66; /* Verde terminal */
+  --accent-color: #00ff66;
   --border-color: #333333;
   --font-mono: "JetBrains Mono", "Fira Code", "Courier New", monospace;
 }
@@ -27,11 +25,11 @@ body {
 }
 
 /* =========================================
-   Layout Global e Tipografia
+   Layout Global & Container
    ========================================= */
 .content-container {
   flex: 1;
-  max-width: 720px;
+  max-width: 1100px; /* Expandido para acomodar o Grid de 2 colunas */
   margin: 0 auto;
   padding: 2rem 1rem;
   width: 100%;
@@ -54,15 +52,24 @@ h3 {
    ========================================= */
 .site-header {
   border-bottom: 1px solid var(--border-color);
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .header-container {
-  max-width: 720px;
+  max-width: 1100px;
   margin: 0 auto;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  white-space: nowrap;
 }
 
 .site-logo {
@@ -77,8 +84,9 @@ h3 {
 
 .site-nav {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.2rem;
   align-items: center;
+  white-space: nowrap;
 }
 
 .site-nav a {
@@ -98,7 +106,140 @@ h3 {
 }
 
 /* =========================================
-   Footer
+   Hero Section
+   ========================================= */
+.hero-section {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  border: 1px dashed var(--border-color);
+  padding: 2rem;
+  margin-bottom: 3rem;
+  background-color: #080808;
+}
+
+.profile-avatar {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--accent-color);
+  object-fit: cover;
+  display: block;
+}
+
+.username {
+  font-size: 1.8rem;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.handle {
+  display: block;
+  color: var(--accent-color);
+  margin: 0.3rem 0 1rem 0;
+  font-size: 0.9rem;
+}
+
+.description {
+  font-size: 0.95rem;
+  color: #aaaaaa;
+}
+
+/* =========================================
+   Zig-Zag Hub Sections (Internal & External)
+   ========================================= */
+.hub-nav-section,
+.external-links-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  margin-bottom: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #1a1a1a;
+}
+
+/* Inversão de alinhamento para o bloco de links externos */
+.external-links-section .section-desc {
+  text-align: right;
+}
+
+.section-desc .section-title {
+  color: var(--accent-color);
+  font-size: 1.05rem;
+  margin-bottom: 0.6rem;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.section-desc p {
+  font-size: 0.88rem;
+  color: #888888;
+  line-height: 1.6;
+}
+
+.cards-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/* Cards de Navegação */
+.hub-card,
+.external-link-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--border-color);
+  background-color: #0a0a0a;
+  color: #eeeeee;
+  transition:
+    border-color 0.15s linear,
+    background-color 0.15s linear;
+  margin-bottom: 0;
+}
+
+.hub-card:hover,
+.external-link-card:hover {
+  border-color: var(--accent-color);
+  background-color: #111111;
+}
+
+.card-left {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.card-icon {
+  width: 18px;
+  height: 18px;
+  filter: invert(1);
+}
+
+.ext-icon {
+  color: var(--accent-color);
+}
+
+/* =========================================
+   Scroll Reveal Animation
+   ========================================= */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(25px);
+  transition:
+    opacity 0.5s ease-out,
+    transform 0.5s ease-out;
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================
+   Footer & Other Elements
    ========================================= */
 .site-footer {
   border-top: 1px solid var(--border-color);
@@ -108,153 +249,17 @@ h3 {
   color: #666666;
 }
 
-/* =========================================
-   Landing Page Hub (Linktree)
-   ========================================= */
-.hub-container {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-}
+/* Responsive Rules */
+@media (max-width: 768px) {
+  .hero-section,
+  .hub-nav-section,
+  .external-links-section {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 
-.profile-header {
-  text-align: center;
-  border: 1px dashed var(--border-color);
-  padding: 2rem;
-}
-
-.avatar-img {
-  width: 96px;
-  height: 96px;
-  border: 1px solid var(--accent-color);
-  margin-bottom: 1rem;
-  border-radius: 0;
-  image-rendering: pixelated;
-}
-
-.handle {
-  color: var(--accent-color);
-  margin-bottom: 1rem;
-}
-
-.bio {
-  font-size: 0.95rem;
-}
-
-.section-title {
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  font-size: 1rem;
-  color: #888888;
-}
-
-.hub-card,
-.external-link-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  border: 1px solid var(--border-color);
-  margin-bottom: 0.8rem;
-  transition: all 0.1s linear;
-}
-
-.hub-card:hover,
-.external-link-card:hover {
-  border-color: var(--accent-color);
-  background-color: #111111;
-}
-
-.hub-card:hover .ext-icon,
-.external-link-card:hover .ext-icon {
-  color: var(--accent-color);
-}
-
-.card-left {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.card-icon {
-  width: 20px;
-  height: 20px;
-  filter: invert(1);
-}
-
-/* =========================================
-   Microblog Feed
-   ========================================= */
-.post-card {
-  border: 1px solid var(--border-color);
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  background-color: #0a0a0a;
-}
-
-.post-card h2 {
-  color: var(--fg-color);
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-}
-
-.post-card time {
-  font-size: 0.85rem;
-  color: #666666;
-  display: block;
-  margin-bottom: 1.5rem;
-}
-
-.feed-details summary {
-  cursor: pointer;
-  list-style: none;
-}
-
-.feed-details summary::-webkit-details-marker {
-  display: none;
-}
-
-.summary-preview {
-  margin-top: 1rem;
-  color: #999999;
-}
-
-.expand-btn-wrapper {
-  display: block;
-  margin-top: 1rem;
-}
-
-.expand-btn {
-  color: var(--bg-color);
-  background-color: var(--border-color);
-  padding: 0.2rem 0.5rem;
-  font-size: 0.85rem;
-  transition: all 0.1s linear;
-}
-
-.feed-details:hover .expand-btn {
-  background-color: var(--accent-color);
-}
-
-.feed-details[open] .summary-preview,
-.feed-details[open] .expand-btn-wrapper {
-  display: none;
-}
-
-.preview-image {
-  max-width: 100%;
-  height: auto;
-  border: 1px solid var(--border-color);
-  margin-bottom: 1rem;
-  filter: grayscale(100%);
-  transition: all 0.1s linear;
-}
-
-.preview-image:hover {
-  filter: grayscale(0%);
-}
-
-.post-content p {
-  margin-bottom: 1rem;
+  .external-links-section .section-desc {
+    text-align: left;
+    order: -1;
+  }
 }
