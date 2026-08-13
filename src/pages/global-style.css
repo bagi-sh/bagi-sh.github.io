@@ -337,3 +337,119 @@ h3 {
 .lastfm-container.is-playing .music-icon {
   color: var(--accent-color, #00ff66);
 }
+
+/* =========================================
+   Microblog Feed Style
+   ========================================= */
+.feed-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.feed-title {
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  margin-bottom: 2rem;
+  border-bottom: 1px dashed var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.post-card {
+  border: 1px solid var(--border-color);
+  background-color: #080808;
+  padding: 1.5rem;
+  transition: border-color 0.15s ease;
+}
+
+.post-card:hover {
+  border-color: #444444;
+}
+
+.post-header {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #1a1a1a;
+  padding-bottom: 0.5rem;
+}
+
+.post-title {
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin-bottom: 0.2rem;
+}
+
+.post-date {
+  font-size: 0.75rem;
+  color: #666666;
+  font-family: var(--font-mono);
+}
+
+/* Remoção dos marcadores nativos de <details> */
+.feed-details summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.feed-details summary::-webkit-details-marker,
+.feed-details summary::marker {
+  display: none;
+}
+
+.summary-preview {
+  color: #a0a0a0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+/* Botão Dinâmico sem JS */
+.toggle-btn {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: var(--bg-color);
+  background-color: var(--border-color);
+  padding: 0.2rem 0.6rem;
+  transition: background-color 0.15s ease;
+}
+
+.toggle-btn::after {
+  content: attr(data-label-expand);
+}
+
+.feed-details:hover .toggle-btn {
+  background-color: var(--accent-color);
+}
+
+/* Alterações de estado quando o post está ABERTO ([open]) */
+.feed-details[open] .summary-preview {
+  display: none;
+}
+
+.feed-details[open] .toggle-btn::after {
+  content: attr(data-label-collapse);
+}
+
+.feed-details[open] .toggle-btn {
+  background-color: var(--accent-color);
+  margin-bottom: 1rem;
+}
+
+.post-content {
+  font-size: 0.9rem;
+  color: #cccccc;
+  line-height: 1.6;
+}
+
+.post-content p {
+  margin-bottom: 1rem;
+}
+
+.post-content p:last-child {
+  margin-bottom: 0;
+}

@@ -1,8 +1,9 @@
 ---
 /**
- * English Docs Route with Accordion Navigation
+ * English Docs Route with Table of Contents (ToC) Sidebar
  */
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import LayoutGlobal from '../../../layouts/LayoutGlobal.astro';
 import '../../global-style.css';
 
@@ -12,59 +13,286 @@ export async function getStaticPaths() {
 
   return enDocs.map(entry => ({
     params: { slug: entry.slug.replace(/^en\//, '') },
-    props: { entry, allDocs: enDocs },
+    props: { entry },
   }));
 }
 
 interface Props {
   entry: CollectionEntry<'docs'>;
-  allDocs: CollectionEntry<'docs'>[];
 }
 
-const { entry, allDocs } = Astro.props;
-const { Content } = await entry.render();
+const { entry } = Astro.props;
+
+// headings extrai todos os elementos #, ##, ### em tempo de build
+const { Content, headings } = await entry.render();
 
 const currentSlug = entry.slug.replace(/^en\//, '');
-const switchedPath = currentSlug === 'example-doc' ? '/pt/docs/exemplo-doc/' : `/pt/docs/${currentSlug}/`;
+const switchedPath = `/pt/docs/${currentSlug}/`;
 
-// Sort docs by order if available
-const sortedDocs = [...allDocs].sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+// Estrutura em árvore: Filtra h2 (tópicos principais) e associa h3 (subtópicos)
+interface HeadingNode {
+  depth: number;
+  slug: string;
+  text: string;
+  children: HeadingNode[];
+}
+
+const tocTree: HeadingNode[] = [];
+let currentH2: HeadingNode | null = null;
+
+headings.forEach(h => {
+  if (h.depth === 2) {
+    currentH2 = { depth: h.depth, slug: h.slug, text: h.text, children: [] };
+    tocTree.push(currentH2);
+  } else if (h.depth === 3 && currentH2) {
+    currentH2.children.push({ depth: h.depth, slug: h.slug, text: h.text, children: [] });
+  }
+});
 ---
 
 <LayoutGlobal title={`${entry.data.title} | Docs`} description={entry.data.description} lang="en" switchedPath={switchedPath}>
-  <div class="docs-container">
-    <aside class="docs-accordion-sidebar">
-      <h3>
-        <img src="/icons/book.svg" alt="Docs Icon" class="card-icon" />
-        Documentation
-      </h3>
+  <div class="docs-layout">
+    
+    <!-- SIDEBAR: Table of Contents (Índice da Página) -->
+    <aside class="docs-sidebar">
+      <div class="sidebar-sticky">
+        <h3 class="sidebar-title">
+          <img src="/icons/book.svg" alt="" class="sidebar-icon" />
+          On This Page
+        </h3>
 
-      <details class="accordion-group" open>
-        <summary class="accordion-summary">
-          <span>Topics & Articles</span>
-          <img src="/icons/chevron-right.svg" alt="Toggle" class="accordion-icon" />
-        </summary>
-        <ul class="accordion-item-list">
-          {sortedDocs.map(d => {
-            const slugPath = d.slug.replace(/^en\//, '');
-            const isActive = slugPath === currentSlug;
-            return (
-              <li>
-                <a href={`/en/docs/${slugPath}/`} class={isActive ? 'active' : ''}>
-                  <img src="/icons/file-text.svg" alt="Doc" style="width:14px; height:14px;" />
-                  <span>{d.data.title}</span>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </details>
+        <nav class="sidebar-nav">
+          {tocTree.length === 0 ? (
+            <p class="empty-toc">No sub-topics found.</p>
+          ) : (
+            tocTree.map(node => (
+              <details class="accordion-group" open>
+                <summary class="accordion-summary">
+                  <a href={`#${node.slug}`} class="toc-h2-link">{node.text}</a>
+                </summary>
+                
+                {node.children.length > 0 && (
+                  <ul class="accordion-item-list">
+                    {node.children.map(child => (
+                      <li>
+                        <a href={`#${child.slug}`} class="sidebar-link">
+                          <span class="link-indicator">&gt;</span>
+                          {child.text}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </details>
+            ))
+          )}
+        </nav>
+      </div>
     </aside>
 
+    <!-- CONTEÚDO PRINCIPAL DO MARKDOWN -->
     <article class="doc-content">
-      <h1>{entry.data.title}</h1>
-      <p>{entry.data.description}</p>
-      <Content />
+      <header class="doc-header">
+        <h1>{entry.data.title}</h1>
+        <p class="doc-description">{entry.data.description}</p>
+      </header>
+      <div class="doc-body">
+        <Content />
+      </div>
     </article>
+
   </div>
 </LayoutGlobal>
+
+<style>
+  /* Layout denso com margens reduzidas */
+  .docs-layout {
+    display: flex;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.5rem 0;
+    align-items: start;
+  }
+
+  /* Controle de colapso da sidebar */
+  .sidebar-toggle-wrapper {
+    flex-shrink: 0;
+    width: 240px;
+    transition: width 0.15s ease;
+  }
+
+  .sidebar-toggle-wrapper:not([open]) {
+    width: auto;
+  }
+
+  .sidebar-toggle-btn {
+    list-style: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+    user-select: none;
+  }
+
+  .sidebar-toggle-btn::-webkit-details-marker,
+  .sidebar-toggle-btn::marker {
+    display: none;
+  }
+
+  .sidebar-toggle-wrapper[open] .toggle-text-closed {
+    display: none;
+  }
+
+  .sidebar-toggle-wrapper:not([open]) .toggle-text-open {
+    display: none;
+  }
+
+  /* Sidebar compacta */
+  .docs-sidebar {
+    border-right: 1px solid var(--border-color);
+    padding-right: 0.8rem;
+  }
+
+  .sidebar-sticky {
+    position: sticky;
+    top: 1rem;
+  }
+
+  .sidebar-title {
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px dashed var(--border-color);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .empty-toc {
+    font-size: 0.75rem;
+    color: #555;
+  }
+
+  .accordion-group {
+    margin-bottom: 0.3rem;
+  }
+
+  .accordion-summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+    background-color: #080808;
+    border: 1px solid var(--border-color);
+    font-size: 0.8rem;
+  }
+
+  .accordion-summary::-webkit-details-marker,
+  .accordion-summary::marker {
+    display: none;
+  }
+
+  .toc-h2-link {
+    color: #ccc;
+    text-decoration: none;
+  }
+
+  .toc-h2-link:hover {
+    color: var(--accent-color);
+  }
+
+  .accordion-item-list {
+    list-style: none;
+    border: 1px solid var(--border-color);
+    border-top: none;
+    padding: 0.2rem 0;
+    background-color: #030303;
+  }
+
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.15rem 0.6rem;
+    font-size: 0.75rem;
+    color: #777;
+    text-decoration: none;
+  }
+
+  .sidebar-link:hover {
+    color: var(--accent-color);
+  }
+
+  .link-indicator {
+    font-size: 0.65rem;
+    color: var(--border-color);
+  }
+
+  /* Área do Conteúdo Principal */
+  .doc-content {
+    flex-grow: 1;
+    min-width: 0;
+  }
+
+  .doc-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .doc-header h1 {
+    font-size: 1.4rem;
+    color: var(--accent-color);
+    margin-bottom: 0.2rem;
+  }
+
+  .doc-description {
+    color: #777;
+    font-size: 0.85rem;
+  }
+
+  .doc-body {
+    line-height: 1.5;
+    color: #bbb;
+    font-size: 0.9rem;
+  }
+
+  .doc-body :global(h2) {
+    margin-top: 1.2rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: #fff;
+    border-bottom: 1px solid #1a1a1a;
+    padding-bottom: 0.2rem;
+  }
+
+  .doc-body :global(h3) {
+    margin-top: 0.8rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+    color: #ddd;
+  }
+
+  .doc-body :global(p) {
+    margin-bottom: 0.8rem;
+  }
+
+  @media (max-width: 768px) {
+    .docs-layout {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .sidebar-toggle-wrapper {
+      width: 100%;
+    }
+
+    .docs-sidebar {
+      border-right: none;
+      border-bottom: 1px solid var(--border-color);
+      padding-right: 0;
+      padding-bottom: 0.8rem;
+    }
+  }
+</style>

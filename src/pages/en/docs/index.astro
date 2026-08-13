@@ -1,0 +1,125 @@
+---
+import LayoutGlobal from '../../../layouts/LayoutGlobal.astro';
+import { getCollection } from 'astro:content';
+import '../../global-style.css';
+
+const allDocs = await getCollection('docs');
+const enDocs = allDocs.filter(doc => doc.slug.startsWith('en/'));
+
+const projectsMap = enDocs.reduce((acc, doc) => {
+  const parts = doc.slug.split('/');
+  // Se o slug for "en/projeto-alpha/doc", parts[1] é o projeto.
+  // Se for apenas "en/doc", cai em "General".
+  const projectName = parts.length > 2 ? parts[1] : 'General';
+
+  if (!acc[projectName]) {
+    acc[projectName] = [];
+  }
+
+  const cleanSlug = doc.slug.replace(/^en\//, '');
+
+  acc[projectName].push({
+    title: doc.data.title,
+    slug: `/en/docs/${cleanSlug}/`,
+    order: doc.data.order || 99,
+  });
+
+  return acc;
+}, {} as Record<string, Array<{ title: string; slug: string; order: number }>>);
+
+// Ordena os documentos dentro de cada projeto
+for (const project in projectsMap) {
+  projectsMap[project].sort((a, b) => a.order - b.order);
+}
+---
+
+<LayoutGlobal title="Technical Documentation | Bagi-sh" lang="en">
+  <div class="docs-index-container">
+    <header class="docs-index-header">
+      <h1 class="docs-title">:: TECHNICAL DOCUMENTATION</h1>
+      <p class="docs-subtitle">Architecture specifications, deployment guides, and project logs.</p>
+    </header>
+
+    <div class="projects-grid">
+      {Object.entries(projectsMap).map(([project, docs]) => (
+        <section class="project-card">
+          <h2 class="project-title">// {project.replace(/-/g, ' ')}</h2>
+          <ul class="docs-list">
+            {docs.map(doc => (
+              <li>
+                <a href={doc.slug} class="doc-link">
+                  <span class="arrow">&rarr;</span> {doc.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </div>
+</LayoutGlobal>
+
+<style>
+  .docs-index-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .docs-index-header {
+    margin-bottom: 3rem;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 1.5rem;
+  }
+  .docs-title {
+    font-size: 1.4rem;
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+  }
+  .docs-subtitle {
+    font-size: 0.95rem;
+    color: #888;
+  }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  .project-card {
+    border: 1px solid var(--border-color);
+    background-color: #080808;
+    padding: 1.5rem;
+  }
+  .project-title {
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 1.2rem;
+    border-bottom: 1px solid #1a1a1a;
+    padding-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+  .docs-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .doc-link {
+    display: flex;
+    align-items: center;
+    color: #ccc;
+    font-size: 0.9rem;
+    transition: color 0.15s ease;
+  }
+  .doc-link:hover {
+    color: var(--accent-color);
+  }
+  .arrow {
+    color: var(--border-color);
+    margin-right: 0.6rem;
+    font-family: var(--font-mono);
+    transition: color 0.15s ease;
+  }
+  .doc-link:hover .arrow {
+    color: var(--accent-color);
+  }
+</style>
