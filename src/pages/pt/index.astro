@@ -2,8 +2,9 @@
 /**
  * Portuguese Landing Page Hub / Linktree
  */
- import LayoutGlobal from '../../layouts/LayoutGlobal.astro';
- import WeeklyStats from '../../components/WeeklyStats.astro';
+import LayoutGlobal from '../../layouts/LayoutGlobal.astro';
+import WeeklyStats from '../../components/WeeklyStats.astro';
+import MatrixBg from '../../components/MatrixBg.astro';
 import '../global-style.css';
 
 const externalLinks = [
@@ -26,6 +27,7 @@ const externalLinks = [
 ---
 
 <LayoutGlobal title="Bagi-sh.com | Engenharia & Cibersegurança" lang="pt">
+  <MatrixBg/>
   <section class="hero-section scroll-reveal">
     <div class="avatar-container">
       <img src="/icons/avatar.png" alt="BAGI" class="profile-avatar" />
@@ -62,7 +64,7 @@ const externalLinks = [
         </div>
         <span class="ext-icon">&rarr;</span>
       </a>
-      <a href="/en/docs/example-doc/" class="hub-card">
+      <a href="/en/docs/" class="hub-card">
         <div class="card-left">
           <img src="/icons/book.svg" alt="Docs" class="card-icon" />
           <span>Technical Documentation</span>
@@ -128,3 +130,22 @@ this is "Bereguejoson". Dont touch -->
   </script>
 <WeeklyStats/>
 </LayoutGlobal>
+<style is:global>
+  html, body {
+    background-color: transparent !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  header, nav, .header-container {
+    background-color: #050505; 
+    position: relative;
+    z-index: 10;
+  }
+
+  .profile-card, .navigation-hub, .nav-card, .info-box {
+    background-color: #050505;
+    position: relative;
+    z-index: 2;
+  }
+</style>

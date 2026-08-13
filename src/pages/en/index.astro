@@ -3,6 +3,7 @@
  * English Landing Page Hub / Linktree
  */
 import WeeklyStats from '../../components/WeeklyStats.astro';
+import MatrixBg from '../../components/MatrixBg.astro';
 import LayoutGlobal from '../../layouts/LayoutGlobal.astro';
 import '../global-style.css';
 
@@ -26,6 +27,7 @@ const externalLinks = [
 ---
 
 <LayoutGlobal title="Bagi-sh | Low-Level Programming, Software Archtiture & Security" lang="en">
+<MatrixBg/>
 <section class="hero-section scroll-reveal">
   <div class="avatar-container">
     <img src="/icons/avatar.png" alt="BAGI" class="profile-avatar" />
@@ -128,6 +130,26 @@ this is "Bereguejoson". Dont touch -->
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
     });
-  </script>
+</script>
 
-</LayoutGlobal>
+  </LayoutGlobal>
+<style is:global>
+  html, body {
+    background-color: transparent !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  header, nav, .header-container {
+    background-color: #050505; 
+    position: relative;
+    z-index: 10;
+  }
+
+  .profile-card, .navigation-hub, .nav-card, .info-box {
+    background-color: #050505;
+    position: relative;
+    z-index: 2;
+  }
+</style>
+

@@ -1,0 +1,67 @@
+---
+---
+
+<matrix-bg>
+  <canvas id="cmatrix-canvas"></canvas>
+</matrix-bg>
+
+<style>
+  matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    display: block;
+  }
+
+  canvas {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.6;
+  }
+</style>
+
+<script>
+  import { CMatrixBackground } from '../lib/cmatrix';
+
+  class MatrixBgElement extends HTMLElement {
+    private matrix: CMatrixBackground | null = null;
+
+    connectedCallback() {
+      const canvas = this.querySelector('canvas');
+      if (canvas) {
+        this.matrix = new CMatrixBackground(canvas, {
+          fontSize: 10,
+          speed: 3,
+          density: 0.5,
+          color: '#00ff66'
+        });
+        this.matrix.start();
+      }
+
+      document.addEventListener('visibilitychange', this.handleVisibility);
+    }
+
+    disconnectedCallback() {
+      if (this.matrix) {
+        this.matrix.destroy();
+      }
+      document.removeEventListener('visibilitychange', this.handleVisibility);
+    }
+
+    private handleVisibility = () => {
+      if (!this.matrix) return;
+      if (document.hidden) {
+        this.matrix.stop();
+      } else {
+        this.matrix.start();
+      }
+    };
+  }
+
+  customElements.define('matrix-bg', MatrixBgElement);
+</script>
