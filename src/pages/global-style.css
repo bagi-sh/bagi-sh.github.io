@@ -195,6 +195,13 @@ h3 {
   text-align: right;
 }
 
+/* Estilo do container de descrição com fundo sólido */
+.section-desc {
+  background-color: #080808;
+  border: 1px solid #1a1a1a;
+  padding: 1.2rem;
+}
+
 .section-desc .section-title {
   color: var(--accent-color);
   font-size: 1.05rem;
@@ -208,7 +215,6 @@ h3 {
   color: #888888;
   line-height: 1.6;
 }
-
 .cards-group {
   display: flex;
   flex-direction: column;

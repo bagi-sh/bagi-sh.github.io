@@ -134,22 +134,40 @@ this is "Bereguejoson". Dont touch -->
 
   </LayoutGlobal>
 <style is:global>
+  /* Define fundo preto puro na raiz sem vazar o fundo branco do navegador */
   html, body {
-    background-color: transparent !important;
+    background-color: #050505CC !important;
     margin: 0;
     padding: 0;
   }
 
-  header, nav, .header-container {
+  /* Garante o fundo do Header */
+  .site-header, header, .header-container {
     background-color: #050505; 
     position: relative;
     z-index: 10;
   }
 
-  .profile-card, .navigation-hub, .nav-card, .info-box {
-    background-color: #050505;
+  /* Bloco Hero */
+  .hero-section {
+    background-color: #080808;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Blocos laterais de descrição (Navigation Hub / Connect & Socials) */
+  .section-desc {
+    background-color: #080808;
+    border: 1px solid #1a1a1a;
+    padding: 1.2rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Cards dos links */
+  .hub-card, .external-link-card {
+    background-color: #0a0a0a;
     position: relative;
     z-index: 2;
   }
 </style>
-
