@@ -8,6 +8,8 @@ Hi, so, this is my very first website and first post on this. Actually, i vibe c
 
 To be honest, I'm now becoming worried about how personal this posts can be, but for now, let me introduce myself. I'm Bagi ("u can pronounce 'BAH-jee' or "bah-GEE" and no, this is not my real name) for now i have about 17 years and i actually like to code stuff and learn tech.
 
+Among my active projects, which i will add here soon, there's InkDroid (CCW), an operating system/bootloader that i recently started, and also a shell written in C that i kinda dropped (I going to break up at some point)
+
 If you are reading this, I wonder how u get there btw
 
 ```bash
