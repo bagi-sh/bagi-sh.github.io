@@ -1,0 +1,393 @@
+---
+import LayoutGlobal from '../../../../layouts/LayoutGlobal.astro';
+import { projects, type ProjectEntry } from '../../../../data/projects';
+import { getProjectDocs, type DocItem, type DocsTreeNode } from '../../../../lib/github-docs';
+import DocsSidebar from '../../../../components/docs/DocsSidebar.astro';
+import DocsPagination from '../../../../components/docs/DocsPagination.astro';
+
+export async function getStaticPaths() {
+  const paths = [];
+
+  for (const project of projects) {
+    if (!project.docs) continue;
+    const projectDocs = await getProjectDocs(project);
+
+    for (const doc of projectDocs.flatDocs) {
+      paths.push({
+        params: {
+          project: project.slug,
+          slug: doc.slug || undefined,
+        },
+        props: {
+          project,
+          doc,
+          tree: projectDocs.tree,
+        },
+      });
+    }
+  }
+
+  return paths;
+}
+
+interface Props {
+  project: ProjectEntry;
+  doc: DocItem;
+  tree: DocsTreeNode[];
+}
+
+const { project, doc, tree } = Astro.props;
+---
+
+<LayoutGlobal
+  title={`${doc.title} | ${project.title} Book`}
+  description={`${doc.title} - ${project.title} technical documentation`}
+  lang="en"
+  switchedPath="/pt/docs/"
+>
+  <div class="docs-viewport">
+    <!-- Desktop Sidebar -->
+    <aside class="docs-sidebar-desktop">
+      <div class="sidebar-sticky">
+        <div class="sidebar-project-header">
+          <a href={`/en/projects/${project.slug}/`} class="sidebar-back-link">
+            &larr; Back to {project.title}
+          </a>
+          <h2 class="sidebar-title">:: {project.title} Book</h2>
+        </div>
+
+        <nav class="sidebar-tree-container">
+          <DocsSidebar tree={tree} currentFullSlug={doc.fullSlug} />
+        </nav>
+      </div>
+    </aside>
+
+    <!-- Mobile Drawer / Dropdown -->
+    <details class="docs-sidebar-mobile">
+      <summary class="mobile-summary">
+        <span class="mobile-summary-icon">☰</span>
+        <span>Chapters & Files ({project.title})</span>
+      </summary>
+      <div class="mobile-tree-content">
+        <DocsSidebar tree={tree} currentFullSlug={doc.fullSlug} />
+      </div>
+    </details>
+
+    <!-- Main Content -->
+    <main class="docs-main-container">
+      <nav class="docs-breadcrumbs" aria-label="Breadcrumbs">
+        {doc.breadcrumbs.map((crumb, idx) => (
+          <span class="crumb-item">
+            {idx > 0 && <span class="crumb-sep">/</span>}
+            {crumb.href ? (
+              <a href={crumb.href} class="crumb-link">
+                {crumb.label}
+              </a>
+            ) : (
+              <span class="crumb-active">{crumb.label}</span>
+            )}
+          </span>
+        ))}
+      </nav>
+
+      <article class="doc-body doc-article" set:html={doc.renderedHtml} />
+
+      <DocsPagination prev={doc.prev} next={doc.next} />
+    </main>
+  </div>
+</LayoutGlobal>
+
+<style>
+  .docs-viewport {
+    display: flex;
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 0 3rem 0;
+    align-items: flex-start;
+  }
+
+  /* Desktop Sidebar */
+  .docs-sidebar-desktop {
+    width: 290px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border-color);
+    padding-right: 1.25rem;
+  }
+
+  .sidebar-sticky {
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    padding-bottom: 2rem;
+  }
+
+  .sidebar-project-header {
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px dashed var(--border-color);
+  }
+
+  .sidebar-back-link {
+    display: inline-block;
+    font-size: 0.78rem;
+    color: #888;
+    margin-bottom: 0.4rem;
+    transition: color 0.15s ease;
+  }
+
+  .sidebar-back-link:hover {
+    color: var(--accent-color);
+  }
+
+  .sidebar-title {
+    font-size: 0.85rem;
+    color: var(--accent-color);
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+
+  .sidebar-tree-container {
+    padding-top: 0.25rem;
+  }
+
+  /* Mobile Sidebar */
+  .docs-sidebar-mobile {
+    display: none;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+    background-color: #080808;
+    border-radius: 2px;
+  }
+
+  .mobile-summary {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    user-select: none;
+  }
+
+  .mobile-summary::-webkit-details-marker,
+  .mobile-summary::marker {
+    display: none;
+  }
+
+  .mobile-summary-icon {
+    font-size: 1.1rem;
+  }
+
+  .mobile-tree-content {
+    padding: 1rem;
+    border-top: 1px dashed var(--border-color);
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+
+  /* Main Content Area */
+  .docs-main-container {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .docs-breadcrumbs {
+    font-size: 0.78rem;
+    color: #666;
+    margin-bottom: 1.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+  }
+
+  .crumb-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .crumb-sep {
+    color: #444;
+  }
+
+  .crumb-link {
+    color: #888;
+    transition: color 0.15s ease;
+  }
+
+  .crumb-link:hover {
+    color: var(--accent-color);
+  }
+
+  .crumb-active {
+    color: #bbb;
+  }
+
+  /* Doc Markdown Enhancements */
+  :global(.doc-article h1) {
+    font-size: 1.85rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #222;
+    padding-bottom: 0.5rem;
+  }
+
+  :global(.doc-article h2) {
+    font-size: 1.35rem;
+    color: #eee;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px dashed #222;
+    padding-bottom: 0.35rem;
+  }
+
+  :global(.doc-article h3) {
+    font-size: 1.1rem;
+    color: #ccc;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  :global(.doc-article p) {
+    margin-bottom: 1.1rem;
+    line-height: 1.7;
+    color: #ccc;
+  }
+
+  :global(.doc-article hr) {
+    border: none;
+    border-top: 1px dashed var(--border-color);
+    margin: 2rem 0;
+  }
+
+  :global(.doc-article blockquote) {
+    border-left: 3px solid var(--accent-color);
+    background-color: rgba(0, 255, 102, 0.04);
+    padding: 0.75rem 1rem;
+    margin: 1.25rem 0;
+    color: #bbb;
+  }
+
+  :global(.doc-article code:not(pre code)) {
+    background-color: #111;
+    color: var(--accent-color);
+    padding: 0.15rem 0.35rem;
+    border-radius: 2px;
+    font-size: 0.88em;
+    border: 1px solid #222;
+  }
+
+  :global(.doc-article pre) {
+    background-color: #060606 !important;
+    border: 1px solid var(--border-color);
+    padding: 1.2rem;
+    border-radius: 3px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  :global(.doc-article .table-container) {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  :global(.doc-article table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-color);
+  }
+
+  :global(.doc-article th) {
+    background-color: #111;
+    color: #fff;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--border-color);
+    text-align: left;
+  }
+
+  :global(.doc-article td) {
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--border-color);
+    color: #bbb;
+  }
+
+  :global(.doc-article tr:nth-child(even)) {
+    background-color: #090909;
+  }
+
+  /* Callouts / Alerts */
+  :global(.callout) {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    border-left: 4px solid #444;
+    background-color: #090909;
+    border-radius: 2px;
+  }
+
+  :global(.callout-title) {
+    font-weight: bold;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    font-family: var(--font-mono);
+  }
+
+  :global(.callout-note) {
+    border-left-color: #3b82f6;
+  }
+  :global(.callout-note .callout-title) {
+    color: #3b82f6;
+  }
+
+  :global(.callout-tip) {
+    border-left-color: var(--accent-color);
+  }
+  :global(.callout-tip .callout-title) {
+    color: var(--accent-color);
+  }
+
+  :global(.callout-important) {
+    border-left-color: #a855f7;
+  }
+  :global(.callout-important .callout-title) {
+    color: #a855f7;
+  }
+
+  :global(.callout-warning) {
+    border-left-color: #eab308;
+  }
+  :global(.callout-warning .callout-title) {
+    color: #eab308;
+  }
+
+  :global(.callout-caution) {
+    border-left-color: #ef4444;
+  }
+  :global(.callout-caution .callout-title) {
+    color: #ef4444;
+  }
+
+  @media (max-width: 900px) {
+    .docs-viewport {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .docs-sidebar-desktop {
+      display: none;
+    }
+
+    .docs-sidebar-mobile {
+      display: block;
+    }
+  }
+</style>

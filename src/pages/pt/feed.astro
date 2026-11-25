@@ -4,7 +4,6 @@
  */
 import LayoutGlobal from '../../layouts/LayoutGlobal.astro';
 import { getCollection } from 'astro:content';
-import '../global-style.css';
 
 const posts = (await getCollection('microblog'))
   .filter(p => p.slug.startsWith('pt/'))

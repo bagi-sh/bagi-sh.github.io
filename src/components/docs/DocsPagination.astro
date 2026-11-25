@@ -1,0 +1,94 @@
+---
+interface Props {
+  prev?: { title: string; fullSlug: string };
+  next?: { title: string; fullSlug: string };
+}
+
+const { prev, next } = Astro.props;
+---
+
+<nav class="docs-pagination" aria-label="Documentation Pagination">
+  {prev ? (
+    <a href={prev.fullSlug} class="pagination-link prev-link">
+      <span class="pagination-label">&larr; Previous</span>
+      <span class="pagination-title">{prev.title}</span>
+    </a>
+  ) : (
+    <div class="pagination-placeholder"></div>
+  )}
+
+  {next ? (
+    <a href={next.fullSlug} class="pagination-link next-link">
+      <span class="pagination-label">Next &rarr;</span>
+      <span class="pagination-title">{next.title}</span>
+    </a>
+  ) : (
+    <div class="pagination-placeholder"></div>
+  )}
+</nav>
+
+<style>
+  .docs-pagination {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px dashed var(--border-color);
+  }
+
+  .pagination-placeholder {
+    visibility: hidden;
+  }
+
+  .pagination-link {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--border-color);
+    background-color: #080808;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+  }
+
+  .pagination-link:hover {
+    border-color: var(--accent-color);
+    background-color: #0d0d0d;
+    transform: translateY(-1px);
+  }
+
+  .pagination-label {
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: #777;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+  }
+
+  .next-link {
+    text-align: right;
+  }
+
+  .pagination-title {
+    font-size: 0.95rem;
+    color: #eee;
+    font-weight: 500;
+  }
+
+  .pagination-link:hover .pagination-title {
+    color: var(--accent-color);
+  }
+
+  @media (max-width: 600px) {
+    .docs-pagination {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .next-link {
+      text-align: left;
+    }
+  }
+</style>

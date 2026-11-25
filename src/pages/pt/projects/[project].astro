@@ -1,0 +1,180 @@
+---
+import LayoutGlobal from '../../../layouts/LayoutGlobal.astro';
+import { projects, type ProjectEntry } from '../../../data/projects';
+import { getProjectDocs } from '../../../lib/github-docs';
+
+export async function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { project: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: ProjectEntry;
+}
+
+const { project } = Astro.props;
+const projectDocs = project.docs ? await getProjectDocs(project) : null;
+const switchedPath = `/en/projects/${project.slug}/`;
+---
+
+<LayoutGlobal
+  title={`${project.title} | Projetos`}
+  description={project.description}
+  lang="pt"
+  switchedPath={switchedPath}
+>
+  <div class="project-page-container">
+    <header class="project-hero">
+      <div class="project-meta-top">
+        <span class="category-tag">[{project.category.toUpperCase()}]</span>
+        <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" class="repo-link">
+          <img src="/icons/github.svg" alt="GitHub" class="inline-icon" />
+          <span>Repositório GitHub &#8599;</span>
+        </a>
+      </div>
+
+      <h1 class="project-title">{project.title}</h1>
+      <p class="project-tagline">{project.description}</p>
+
+      {project.docs && (
+        <div class="project-actions">
+          <a href={`/en/doc/${project.slug}/`} class="btn-primary-docs">
+            <span class="btn-icon">&rarr;</span>
+            <span class="btn-text">Ver Documentação Técnica ({project.title} Book)</span>
+            <span class="lang-pill">Apenas em inglês</span>
+          </a>
+        </div>
+      )}
+    </header>
+
+    {projectDocs && projectDocs.readmeHtml ? (
+      <section class="project-readme-section">
+        <div class="section-badge">:: README.md</div>
+        <article class="doc-body" set:html={projectDocs.readmeHtml} />
+      </section>
+    ) : (
+      <div class="no-readme">Nenhum README disponível para este projeto.</div>
+    )}
+  </div>
+</LayoutGlobal>
+
+<style>
+  .project-page-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem 0 3rem 0;
+  }
+
+  .project-hero {
+    border: 1px solid var(--border-color);
+    background-color: #080808;
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .project-meta-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .category-tag {
+    color: var(--accent-color);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .repo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #888;
+    transition: color 0.15s ease;
+  }
+
+  .repo-link:hover {
+    color: var(--accent-color);
+  }
+
+  .inline-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .project-title {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .project-tagline {
+    font-size: 1.05rem;
+    color: #aaa;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-actions {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border-color);
+  }
+
+  .btn-primary-docs {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background-color: var(--accent-color);
+    color: #050505;
+    padding: 0.65rem 1.25rem;
+    font-weight: bold;
+    font-size: 0.95rem;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+
+  .btn-primary-docs:hover {
+    background-color: #fff;
+    color: #050505;
+    transform: translateX(3px);
+  }
+
+  .lang-pill {
+    background-color: #000;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    font-size: 0.7rem;
+    padding: 0.1rem 0.45rem;
+    border-radius: 2px;
+    margin-left: 0.4rem;
+    text-transform: uppercase;
+  }
+
+  .project-readme-section {
+    border: 1px solid var(--border-color);
+    background-color: #070707;
+    padding: 2rem;
+  }
+
+  .section-badge {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed var(--border-color);
+    font-family: var(--font-mono);
+  }
+
+  .no-readme {
+    color: #666;
+    font-style: italic;
+    padding: 2rem;
+    text-align: center;
+  }
+</style>

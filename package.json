@@ -11,10 +11,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.16.18"
+    "@types/marked": "^5.0.2",
+    "astro": "^4.16.18",
+    "marked": "^18.3.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@types/node": "^26.6.10",
     "typescript": "^5.7.2"
   }
 }

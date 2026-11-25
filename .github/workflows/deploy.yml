@@ -41,6 +41,7 @@ jobs:
         env:
           PUBLIC_LASTFM_API_KEY: ${{ secrets.PUBLIC_LASTFM_API_KEY }}
           PUBLIC_LASTFM_USERNAME: ${{ secrets.PUBLIC_LASTFM_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm run build
           touch ./dist/.nojekyll

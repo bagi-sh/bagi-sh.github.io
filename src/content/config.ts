@@ -9,12 +9,4 @@ export const collections = {
       tags: z.array(z.string()).optional(),
     }),
   }),
-  docs: defineCollection({
-    type: 'content',
-    schema: z.object({
-      title: z.string(),
-      description: z.string(),
-      order: z.number().optional(),
-    }),
-  }),
 };

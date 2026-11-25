@@ -1,0 +1,185 @@
+---
+import type { DocsTreeNode } from '../../lib/github-docs';
+
+interface Props {
+  tree: DocsTreeNode[];
+  currentFullSlug: string;
+  level?: number;
+}
+
+const { tree, currentFullSlug, level = 0 } = Astro.props;
+
+function hasActiveChild(node: DocsTreeNode, targetSlug: string): boolean {
+  if (node.type === 'file') {
+    return node.fullSlug === targetSlug;
+  }
+  if (node.children) {
+    return node.children.some((child) => hasActiveChild(child, targetSlug));
+  }
+  return false;
+}
+---
+
+<ul class={`tree-list level-${level}`}>
+  {tree.map((node) => {
+    if (node.type === 'folder') {
+      const isOpen = hasActiveChild(node, currentFullSlug) || level === 0;
+      return (
+        <li class="tree-node folder-node">
+          <details class="folder-accordion" open={isOpen}>
+            <summary class="folder-summary">
+              <span class="folder-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </span>
+              <span class="folder-name">{node.name}</span>
+              <span class="folder-chevron" aria-hidden="true">▾</span>
+            </summary>
+            {node.children && node.children.length > 0 && (
+              <div class="folder-children">
+                <Astro.self tree={node.children} currentFullSlug={currentFullSlug} level={level + 1} />
+              </div>
+            )}
+          </details>
+        </li>
+      );
+    }
+
+    const isActive = node.fullSlug === currentFullSlug;
+    return (
+      <li class="tree-node file-node">
+        <a href={node.fullSlug} class={`file-link ${isActive ? 'is-active' : ''}`}>
+          <span class="file-icon" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+            </svg>
+          </span>
+          <span class="file-title">{node.title || node.name}</span>
+        </a>
+      </li>
+    );
+  })}
+</ul>
+
+<style>
+  .tree-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .tree-list.level-0 {
+    font-size: 0.85rem;
+  }
+
+  .folder-children {
+    padding-left: 0.75rem;
+    margin-left: 0.25rem;
+    border-left: 1px dotted var(--border-color);
+  }
+
+  .tree-node {
+    margin: 0.15rem 0;
+  }
+
+  .folder-accordion {
+    margin: 0.2rem 0;
+  }
+
+  .folder-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.25rem 0.4rem;
+    cursor: pointer;
+    user-select: none;
+    color: #bbb;
+    border-radius: 2px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    list-style: none;
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .folder-summary::-webkit-details-marker,
+  .folder-summary::marker {
+    display: none;
+  }
+
+  .folder-summary:hover {
+    color: #fff;
+    background-color: #111;
+  }
+
+  .folder-icon {
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .folder-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .folder-chevron {
+    font-size: 0.75rem;
+    color: #666;
+    transition: transform 0.2s ease;
+  }
+
+  .folder-accordion[open] > .folder-summary > .folder-chevron {
+    transform: rotate(0deg);
+  }
+
+  .folder-accordion:not([open]) > .folder-summary > .folder-chevron {
+    transform: rotate(-90deg);
+  }
+
+  .file-link {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.25rem 0.45rem;
+    color: #888;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+    line-height: 1.35;
+  }
+
+  .file-link:hover {
+    color: #eee;
+    background-color: #111;
+  }
+
+  .file-link.is-active {
+    color: var(--accent-color);
+    background-color: rgba(0, 255, 102, 0.08);
+    border-left: 2px solid var(--accent-color);
+    padding-left: calc(0.45rem - 2px);
+    font-weight: 600;
+  }
+
+  .file-icon {
+    color: #555;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .file-link.is-active .file-icon {
+    color: var(--accent-color);
+  }
+
+  .file-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>
