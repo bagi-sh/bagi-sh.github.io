@@ -37,15 +37,6 @@ const switchedPath = `/pt/projects/${project.slug}/`;
 
       <h1 class="project-title">{project.title}</h1>
       <p class="project-tagline">{project.description}</p>
-
-      {project.docs && (
-        <div class="project-actions">
-          <a href={`/en/doc/${project.slug}/`} class="btn-primary-docs">
-            <span class="btn-icon">&rarr;</span>
-            <span class="btn-text">Read The Documentation ({project.title} Book)</span>
-          </a>
-        </div>
-      )}
     </header>
 
     {projectDocs && projectDocs.readmeHtml ? (
@@ -55,6 +46,15 @@ const switchedPath = `/pt/projects/${project.slug}/`;
       </section>
     ) : (
       <div class="no-readme">No README available for this project.</div>
+    )}
+
+    {project.docs && (
+      <div class="project-actions">
+        <a href={`/en/doc/${project.slug}/`} class="btn-primary-docs">
+          <span class="btn-icon">&rarr;</span>
+          <span class="btn-text">Read The Documentation ({project.title} Book)</span>
+        </a>
+      </div>
     )}
   </div>
 </LayoutGlobal>
@@ -121,7 +121,8 @@ const switchedPath = `/pt/projects/${project.slug}/`;
   .project-actions {
     display: flex;
     gap: 1rem;
-    padding-top: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.25rem;
     border-top: 1px dashed var(--border-color);
   }
 
@@ -164,5 +165,112 @@ const switchedPath = `/pt/projects/${project.slug}/`;
     font-style: italic;
     padding: 2rem;
     text-align: center;
+  }
+
+  /* ── doc-body: README markdown styles (mirrors .doc-article in docs page) ── */
+
+  :global(.doc-body p) {
+    margin-bottom: 1.1rem;
+    line-height: 1.7;
+    color: #ccc;
+  }
+
+  :global(.doc-body h1) {
+    font-size: 1.85rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #222;
+    padding-bottom: 0.5rem;
+  }
+
+  :global(.doc-body h2) {
+    font-size: 1.35rem;
+    color: #eee;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px dashed #222;
+    padding-bottom: 0.35rem;
+  }
+
+  :global(.doc-body h3) {
+    font-size: 1.1rem;
+    color: #ccc;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  :global(.doc-body hr) {
+    border: none;
+    border-top: 1px dashed var(--border-color);
+    margin: 2rem 0;
+  }
+
+  :global(.doc-body blockquote) {
+    border-left: 3px solid var(--accent-color);
+    background-color: rgba(0, 255, 102, 0.04);
+    padding: 0.75rem 1rem;
+    margin: 1.25rem 0;
+    color: #bbb;
+  }
+
+  :global(.doc-body code:not(pre code)) {
+    background-color: #111;
+    color: var(--accent-color);
+    padding: 0.15rem 0.35rem;
+    border-radius: 2px;
+    font-size: 0.88em;
+    border: 1px solid #222;
+  }
+
+  /* Shiki inlines its own background-color on <pre>; override with !important */
+  :global(.doc-body pre) {
+    background-color: #060606 !important;
+    border: 1px solid var(--border-color);
+    padding: 1.2rem;
+    border-radius: 3px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  :global(.doc-body .table-container) {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  :global(.doc-body table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-color);
+  }
+
+  :global(.doc-body th) {
+    background-color: #111;
+    color: #fff;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--border-color);
+    text-align: left;
+  }
+
+  :global(.doc-body td) {
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--border-color);
+    color: #bbb;
+  }
+
+  :global(.doc-body tr:nth-child(even)) {
+    background-color: #090909;
+  }
+
+  :global(.doc-body ul),
+  :global(.doc-body ol) {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+    color: #ccc;
+    line-height: 1.7;
+  }
+
+  :global(.doc-body li) {
+    margin-bottom: 0.35rem;
   }
 </style>

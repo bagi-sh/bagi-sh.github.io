@@ -100,7 +100,7 @@ const { project, doc, tree } = Astro.props;
 <style>
   .docs-viewport {
     display: flex;
-    gap: 2.5rem;
+    gap: 1.5rem;
     max-width: 1200px;
     margin: 0 auto;
     padding: 1rem 0 3rem 0;
@@ -113,6 +113,7 @@ const { project, doc, tree } = Astro.props;
     flex-shrink: 0;
     border-right: 1px solid var(--border-color);
     padding-right: 1.25rem;
+    align-self: stretch;
   }
 
   .sidebar-sticky {

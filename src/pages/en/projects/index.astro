@@ -1,0 +1,154 @@
+---
+import LayoutGlobal from '../../../layouts/LayoutGlobal.astro';
+import { projects } from '../../../data/projects';
+---
+
+<LayoutGlobal
+  title="Projects | Bagi-sh"
+  description="Open-source projects by bagi-sh — tools, audio software, and experiments."
+  lang="en"
+  switchedPath="/pt/projects/"
+>
+  <div class="projects-index-container">
+    <header class="projects-index-header">
+      <h1 class="projects-title">:: PROJECTS</h1>
+      <p class="projects-subtitle">
+        Open-source software and experiments. Click a project to view its README and overview,
+        or go straight to the documentation book.
+      </p>
+    </header>
+
+    <div class="projects-grid">
+      {projects.map((project) => (
+        <section class="project-card">
+          <div class="card-badge">[{project.category.toUpperCase()}]</div>
+          <h2 class="project-title">{project.title}</h2>
+          <p class="project-desc">{project.description}</p>
+          <div class="project-card-actions">
+            <a href={`/en/projects/${project.slug}/`} class="btn-overview">
+              <span>Overview & README</span>
+              <span class="arrow">&rarr;</span>
+            </a>
+            {project.docs && (
+              <a href={`/en/doc/${project.slug}/`} class="btn-docs">
+                Read The Book
+              </a>
+            )}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+</LayoutGlobal>
+
+<style>
+  .projects-index-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1.5rem 0 3rem 0;
+  }
+
+  .projects-index-header {
+    margin-bottom: 2.5rem;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 1.5rem;
+  }
+
+  .projects-title {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .projects-subtitle {
+    font-size: 0.95rem;
+    color: #888;
+    line-height: 1.5;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 1.75rem;
+  }
+
+  .project-card {
+    border: 1px solid var(--border-color);
+    background-color: #080808;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s ease;
+  }
+
+  .project-card:hover {
+    border-color: #444;
+  }
+
+  .card-badge {
+    font-size: 0.72rem;
+    color: var(--accent-color);
+    font-family: var(--font-mono);
+    margin-bottom: 0.75rem;
+  }
+
+  .project-title {
+    font-size: 1.35rem;
+    color: #fff;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-desc {
+    font-size: 0.92rem;
+    color: #aaa;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-overview {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: var(--accent-color);
+    color: #050505;
+    padding: 0.5rem 0.9rem;
+    font-weight: bold;
+    font-size: 0.85rem;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .btn-overview:hover {
+    background-color: #fff;
+    transform: translateX(2px);
+  }
+
+  .btn-docs {
+    font-size: 0.85rem;
+    color: #888;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .btn-docs:hover {
+    color: var(--accent-color);
+  }
+
+  @media (max-width: 600px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

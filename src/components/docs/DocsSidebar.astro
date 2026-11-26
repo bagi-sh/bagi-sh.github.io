@@ -23,7 +23,7 @@ function hasActiveChild(node: DocsTreeNode, targetSlug: string): boolean {
 <ul class={`tree-list level-${level}`}>
   {tree.map((node) => {
     if (node.type === 'folder') {
-      const isOpen = hasActiveChild(node, currentFullSlug) || level === 0;
+      const isOpen = hasActiveChild(node, currentFullSlug);
       return (
         <li class="tree-node folder-node">
           <details class="folder-accordion" open={isOpen}>

@@ -348,7 +348,7 @@ export async function getProjectDocs(project: ProjectEntry): Promise<ProjectDocs
           // Associated with current parent folder if any
         }
         currentLevel.set(part, {
-          name: td.title,
+          name: formatTitle(part), // filename-based label (e.g. "01-getting-started" → "Getting Started")
           origName: part,
           isFolder: false,
           doc: td,
